@@ -1,26 +1,24 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { compose, withState } from 'recompose';
-import GameSearch from './components/gameSearch';
-import ServiceHitsList from './components/serviceHitsList';
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import PopularList from './components/popularList';
+import Home from './components/home';
 
-const App = ({ currentGameName, setCurrentGameName }) => (
-	<div>
-		<GameSearch onSearch={setCurrentGameName} />
-		<ServiceHitsList gameName={currentGameName} />
-	</div>
+const App = () => (
+	<Router>
+		<div>
+			<ul>
+				<li>
+					<Link to="/">Home</Link>
+				</li>
+				<li>
+					<Link to="/twitch">Twitch</Link>
+				</li>
+			</ul>
+
+			<Route exact path="/" component={Home} />
+			<Route path="/twitch" component={PopularList} />
+		</div>
+	</Router>
 );
 
-App.propTypes = {
-	currentGameName: PropTypes.string,
-	setCurrentGameName: PropTypes.func,
-};
-
-App.defaultProps = {
-	currentGameName: '',
-	setCurrentGameName: undefined,
-};
-
-export default compose(
-	withState('currentGameName', 'setCurrentGameName', ''),
-)(App);
+export default App;

@@ -6,6 +6,7 @@
         "react/jsx-indent": ["error", "tab"],
         "react/jsx-filename-extension": "off",
         "function-paren-newline": "off",
-        "react/jsx-indent-props": ["error", "tab"]
+        "react/jsx-indent-props": ["error", "tab"],
+        "jsx-a11y/anchor-is-valid": "off"
     }
 }
