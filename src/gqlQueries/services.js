@@ -1,6 +1,6 @@
 import gql from 'graphql-tag';
 
-export default {
+const serviceQueries = {
 	SERVICE_QUERY: gql`
 			query ServiceQuery($gameName: String!, $serviceName: ServiceType!) {
 				Service (
@@ -17,12 +17,12 @@ export default {
 				}}
 			`,
 	POPULAR_QUERY: gql`
-			query PopularQuery($startDate: String!, $endDate: String!, $serviceName: String!) {
+			query PopularQuery($serviceName: String!) {
 				Popular (
-					startDate: $startDate,
-					endDate: $endDate,
-					serviceName: $serviceName
+					serviceName: $serviceName,
 				)
 			}
 	`,
 };
+
+export default serviceQueries;

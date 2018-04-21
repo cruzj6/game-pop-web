@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import PopularList from './components/popularList';
 import Home from './components/home';
+import constants from './constants';
 
 const App = () => (
 	<Router>
@@ -16,7 +17,7 @@ const App = () => (
 			</ul>
 
 			<Route exact path="/" component={Home} />
-			<Route path="/twitch" component={PopularList} />
+			<Route path="/twitch" render={props => <PopularList {...props} serviceName={constants.SERVICE_NAMES.TWITCH} />} />
 		</div>
 	</Router>
 );
