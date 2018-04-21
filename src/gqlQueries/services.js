@@ -17,10 +17,16 @@ const serviceQueries = {
 				}}
 			`,
 	POPULAR_QUERY: gql`
-			query PopularQuery($serviceName: String!) {
+			query PopularQuery($serviceName: ServiceType!) {
 				Popular (
 					serviceName: $serviceName,
-				)
+				) {
+					game {
+						name
+					},
+					hits,
+
+				}
 			}
 	`,
 };

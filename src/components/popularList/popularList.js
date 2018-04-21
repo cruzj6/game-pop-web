@@ -5,7 +5,6 @@ import PopularListItem from './listItem';
 
 const PopularList = ({ listItems }) => (
 	<ul>
-		{console.log(listItems)}
 		{
 			listItems.map(item => <PopularListItem {...item} name={item.game.name} />)
 		}

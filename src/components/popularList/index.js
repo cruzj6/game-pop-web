@@ -22,7 +22,7 @@ export default compose(
 					return <span>Loading...</span>;
 				}
 
-				return <PopularList listItems={data} />;
+				return <PopularList listItems={data.Popular} />;
 			}
 		}
 	</Query>
