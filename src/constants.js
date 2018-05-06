@@ -3,4 +3,5 @@ export default {
 	SERVICE_NAMES: {
 		TWITCH: 'TWITCH',
 	},
+	TWITCH_WATCH_URL: 'https://www.twitch.tv/directory/game/',
 };

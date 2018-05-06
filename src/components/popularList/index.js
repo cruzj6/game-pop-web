@@ -11,19 +11,22 @@ export default compose(
 		serviceName: PropTypes.oneOf(Object.values(constants.SERVICE_NAMES)),
 	}),
 )(({ serviceName }) => (
-	<Query query={serviceQueries.POPULAR_QUERY} variables={{ serviceName }}>
-		{
-			({ loading, error, data }) => {
-				if (error) {
-					console.log(error);
-					return null;
-				}
-				if (loading) {
-					return <span>Loading...</span>;
-				}
+	<div>
+		<h1>Top Games on {serviceName.toUpperCase()}</h1>
+		<Query query={serviceQueries.POPULAR_QUERY} variables={{ serviceName }}>
+			{
+				({ loading, error, data }) => {
+					if (error) {
+						console.log(error);
+						return null;
+					}
+					if (loading) {
+						return <span>Loading...</span>;
+					}
 
-				return <PopularList listItems={data.Popular} />;
+					return <PopularList listItems={data.Popular} />;
+				}
 			}
-		}
-	</Query>
+		</Query>
+	</div>
 ));

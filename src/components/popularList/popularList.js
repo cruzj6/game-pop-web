@@ -1,14 +1,21 @@
 import React from 'react';
+import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import shapes from '../shapes';
-import PopularListItem from './listItem';
+import constants from '../../constants';
+import GameListItem from '../gameListItem';
+
+const StyledPopularList = styled.ul`
+	margin: 0;
+	padding: 0px;
+`;
 
 const PopularList = ({ listItems }) => (
-	<ul>
+	<StyledPopularList>
 		{
-			listItems.map(item => <PopularListItem {...item} name={item.game.name} />)
+			listItems.map(item => <GameListItem {...item} name={item.game.name} link={`${constants.TWITCH_WATCH_URL}${item.game.name}`} />)
 		}
-	</ul>
+	</StyledPopularList>
 );
 
 PopularList.propTypes = {

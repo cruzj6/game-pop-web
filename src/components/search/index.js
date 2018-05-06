@@ -6,7 +6,7 @@ import GameSearch from '../gameSearch';
 import ServiceHitsList from '../serviceHitsList';
 import ServiceSelection from '../serviceSelection';
 
-const Home = ({
+const Search = ({
 	setCurrentGameName,
 	currentGameName,
 	setSelectedService,
@@ -19,14 +19,14 @@ const Home = ({
 	</Fragment>
 );
 
-Home.propTypes = {
+Search.propTypes = {
 	currentGameName: PropTypes.string,
 	setCurrentGameName: PropTypes.func,
 	setSelectedService: PropTypes.func,
 	selectedService: PropTypes.oneOf(Object.values(constants.SERVICE_NAMES)),
 };
 
-Home.defaultProps = {
+Search.defaultProps = {
 	currentGameName: '',
 	setCurrentGameName: undefined,
 	setSelectedService: undefined,
@@ -36,4 +36,4 @@ Home.defaultProps = {
 export default compose(
 	withState('currentGameName', 'setCurrentGameName', ''),
 	withState('selectedService', 'setSelectedService', constants.SERVICE_NAMES.TWITCH),
-)(Home);
+)(Search);
