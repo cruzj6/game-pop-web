@@ -5,6 +5,7 @@ import PopularList from './components/popularList';
 import Search from './components/search';
 import constants from './constants';
 import styleConstants from './components/styleConstants';
+import PopularityChart from './components/visualization/popularity';
 
 const StyledMain = styled.div`
 	display: flex;
@@ -80,6 +81,7 @@ const App = () => (
 					<Route exact path="/" component={() => <span>home</span>} />
 					<Route exact path="/search" component={Search} />
 					<Route path="/twitch" render={props => <PopularList {...props} serviceName={constants.SERVICE_NAMES.TWITCH} />} />
+					<Route path="/pop-graph/:name" component={PopularityChart} />
 				</StyledContent>
 			</StyledMain>
 		</div>

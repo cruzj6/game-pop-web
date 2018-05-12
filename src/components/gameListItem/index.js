@@ -1,5 +1,8 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import { compose, withHandlers } from 'recompose';
 import styled from 'styled-components';
+import { withRouter } from 'react-router-dom';
 import shapes from '../shapes';
 import styleConstants from '../styleConstants';
 
@@ -37,8 +40,13 @@ const StyledGameName = styled.span`
 	flex: 1 0 auto;
 `;
 
-const GameListItem = ({ name, hits, link }) => (
-	<StyledListItem>
+const GameListItem = ({
+	name,
+	hits,
+	link,
+	onGameClick,
+}) => (
+	<StyledListItem onClick={onGameClick}>
 		<StyledGameName>{name}</StyledGameName>
 		<span>{`Viewers: ${hits}`}</span>
 		<a href={link}>
@@ -50,6 +58,14 @@ const GameListItem = ({ name, hits, link }) => (
 
 GameListItem.propTypes = {
 	...shapes.PopularListItem,
+	history: PropTypes.array.isRequired, // eslint-disable-line
 };
 
-export default GameListItem;
+export default compose(
+	withRouter,
+	withHandlers({
+		onGameClick({ history, name }) {
+			return () => history.push(`/pop-graph/${name}`);
+		},
+	}),
+)(GameListItem);

@@ -19,7 +19,7 @@ const PopularList = ({ listItems }) => (
 );
 
 PopularList.propTypes = {
-	listItems: PropTypes.arrayOf(shapes.PopularListItem),
+	listItems: PropTypes.arrayOf(PropTypes.shape(shapes.PopularListItem)),
 };
 
 PopularList.defaultProps = {

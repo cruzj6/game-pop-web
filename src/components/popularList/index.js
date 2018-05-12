@@ -17,7 +17,6 @@ export default compose(
 			{
 				({ loading, error, data }) => {
 					if (error) {
-						console.log(error);
 						return null;
 					}
 					if (loading) {
