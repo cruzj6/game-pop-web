@@ -81,7 +81,7 @@ const App = () => (
 					<Route exact path="/" component={() => <span>home</span>} />
 					<Route exact path="/search" component={Search} />
 					<Route path="/twitch" render={props => <PopularList {...props} serviceName={constants.SERVICE_NAMES.TWITCH} />} />
-					<Route path="/pop-graph/:name" component={PopularityChart} />
+					<Route path="/pop-graph/:name/:serviceName" component={PopularityChart} />
 				</StyledContent>
 			</StyledMain>
 		</div>

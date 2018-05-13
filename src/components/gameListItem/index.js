@@ -64,8 +64,8 @@ GameListItem.propTypes = {
 export default compose(
 	withRouter,
 	withHandlers({
-		onGameClick({ history, name }) {
-			return () => history.push(`/pop-graph/${name}`);
+		onGameClick({ history, name, serviceName }) {
+			return () => history.push(`/pop-graph/${name}/${serviceName}`);
 		},
 	}),
 )(GameListItem);

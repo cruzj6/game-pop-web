@@ -10,16 +10,17 @@ const StyledPopularList = styled.ul`
 	padding: 0px;
 `;
 
-const PopularList = ({ listItems }) => (
+const PopularList = ({ listItems, serviceName }) => (
 	<StyledPopularList>
 		{
-			listItems.map(item => <GameListItem {...item} name={item.game.name} link={`${constants.TWITCH_WATCH_URL}${item.game.name}`} />)
+			listItems.map(item => <GameListItem {...item} name={item.game.name} link={`${constants.TWITCH_WATCH_URL}${item.game.name}`} serviceName={serviceName} />)
 		}
 	</StyledPopularList>
 );
 
 PopularList.propTypes = {
 	listItems: PropTypes.arrayOf(PropTypes.shape(shapes.PopularListItem)),
+	serviceName: PropTypes.oneOf(constants.SERVICE_NAMES).isRequired,
 };
 
 PopularList.defaultProps = {
