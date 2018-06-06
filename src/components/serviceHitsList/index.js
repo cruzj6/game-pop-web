@@ -6,13 +6,21 @@ import constants from '../../constants';
 import GameListItem from '../gameListItem';
 
 const ServiceHitsList = ({ gameName, serviceName }) => (
-	<Query query={serviceQueries.SERVICE_QUERY} variables={{ gameName, serviceName }}>
+	<Query
+		query={serviceQueries.SERVICE_QUERY}
+		variables={{ gameName, serviceName, fromDate: '1526571669043' }}
+	>
 		{
 			({ data: { Service = [] } = {} }) => (
 				<ul>
 					{
 						Service.map(({ game: { name }, hits }) => (
-							<GameListItem hits={hits} name={name} link={`${constants.TWITCH_WATCH_URL}${name}`} />
+							<GameListItem
+								hits={hits}
+								name={name}
+								link={`${constants.TWITCH_WATCH_URL}${name}`}
+								serviceName={constants.SERVICE_NAMES.TWITCH}
+							/>
 						))
 					}
 				</ul>

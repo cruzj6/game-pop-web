@@ -28,6 +28,16 @@ const StyledChartDiv = styled.div`
 			cursor: pointer;
 		}
 	}
+
+	.data-circle-filled {
+		fill: green;
+		cursor: pointer;
+	}
+
+	.data-zone {
+		stroke-opacity: 0;
+		fill-opacity: 0;
+	}
 `;
 
 const getTwoWeeksAgo = () => {
@@ -83,9 +93,9 @@ const EnhancedPopularityChart = compose(
 		...rest,
 	})),
 	withState('displayedHits', 'setDisplayedHits', ''),
-	withState('displayedDate', 'setDisplayedDate', ''),
+	withState('displayedDate', 'setDisplayedDate', new Date()),
 	withHandlers({
-		renderChart({ setDisplayedHits, setDisplayedDate }) {
+		renderChart({ setDisplayedHits, setDisplayedDate, displayedDate }) {
 			return (serviceData) => {
 				const GRAPH_HEIGHT = 300;
 				const GRAPH_WIDTH = 1000;
@@ -124,27 +134,47 @@ const EnhancedPopularityChart = compose(
 
 				// Build mouseover data-point circles
 				const pointRadius = 5;
-				const dataPointCircle = chartSvg.selectAll('g')
+				const dataPoints = chartSvg.selectAll('g')
 					.data(serviceData)
 					.enter()
-					.append('g')
+					.append('g');
+
+				// Create a mouseover zone for each point
+				const dataPointZone = dataPoints
+					.append('rect')
+					.attr('transform', serviceItem => (
+						translate(
+							scaleDomain(serviceItem.date) - pointRadius,
+							0,
+						)
+					))
+					.attr('width', pointRadius)
+					.attr('height', GRAPH_HEIGHT)
+					.attr('class', 'data-zone');
+
+				// Set displayed hits on mouseover
+				dataPointZone.on('mouseover', ({ date, hits }) => {
+					setDisplayedHits(hits);
+					setDisplayedDate(new Date(Number(date)));
+				});
+
+				// Create circle on graph to indicate data point
+				dataPoints
+					.append('circle')
 					.attr('transform', serviceItem => (
 						translate(
 							scaleDomain(serviceItem.date) - pointRadius,
 							scaleRange(serviceItem.hits) - pointRadius,
 						)
 					))
-					.append('circle')
 					.attr('cx', pointRadius)
 					.attr('cy', pointRadius)
 					.attr('r', pointRadius)
-					.attr('class', 'data-circle');
-
-				// Set displayed hits on mouseover
-				dataPointCircle.on('mouseover', ({ date, hits }) => {
-					setDisplayedHits(hits);
-					setDisplayedDate(new Date(Number(date)));
-				});
+					.attr('class', serviceItem => (
+						serviceItem.date === displayedDate.getTime().toString()
+							? 'data-circle-filled'
+							: 'data-circle'
+					));
 
 				return faux.toReact();
 			};
