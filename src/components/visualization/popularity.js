@@ -2,11 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import * as d3 from 'd3';
 import ReactFauxDOM from 'react-faux-dom';
-import { compose, mapProps, withHandlers, withState } from 'recompose';
+import { compose, withHandlers, withState } from 'recompose';
 import styled from 'styled-components';
 import { Query } from 'react-apollo';
 import constants from '../../constants';
 import serviceQueries from '../../gqlQueries/services';
+import StringUtils from '../../stringUtils';
 
 const StyledDiv = styled.div`
 	color: black;
@@ -63,7 +64,7 @@ const PopularityChart = ({
 					<span>Here is some data for {name}</span>
 					<span>Hits: {displayedHits}</span>
 					<br />
-					<span>Date: {displayedDate && `${displayedDate.getMonth() + 1}/${displayedDate.getDate()}/${displayedDate.getFullYear()}`}</span>
+					<span>Date: {displayedDate && StringUtils.getMMDDYYYY(displayedDate)}</span>
 					<StyledChartDiv>
 						{renderChart(Service)}
 					</StyledChartDiv>
@@ -87,13 +88,8 @@ PopularityChart.defaultProps = {
 };
 
 const EnhancedPopularityChart = compose(
-	mapProps(({ match, ...rest }) => ({
-		name: match.params.name,
-		serviceName: match.params.serviceName,
-		...rest,
-	})),
 	withState('displayedHits', 'setDisplayedHits', ''),
-	withState('displayedDate', 'setDisplayedDate', new Date()),
+	withState('displayedDate', 'setDisplayedDate'),
 	withHandlers({
 		renderChart({ setDisplayedHits, setDisplayedDate, displayedDate }) {
 			return (serviceData) => {
@@ -158,6 +154,11 @@ const EnhancedPopularityChart = compose(
 					setDisplayedDate(new Date(Number(date)));
 				});
 
+				dataPointZone.on('mouseleave', () => {
+					setDisplayedHits('');
+					setDisplayedDate('');
+				});
+
 				// Create circle on graph to indicate data point
 				dataPoints
 					.append('circle')
@@ -171,7 +172,7 @@ const EnhancedPopularityChart = compose(
 					.attr('cy', pointRadius)
 					.attr('r', pointRadius)
 					.attr('class', serviceItem => (
-						serviceItem.date === displayedDate.getTime().toString()
+						displayedDate && displayedDate.getTime().toString() === serviceItem.date
 							? 'data-circle-filled'
 							: 'data-circle'
 					));

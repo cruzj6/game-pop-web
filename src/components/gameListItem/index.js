@@ -1,24 +1,12 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { compose, withHandlers } from 'recompose';
 import styled from 'styled-components';
 import { withRouter } from 'react-router-dom';
 import shapes from '../shapes';
 import styleConstants from '../styleConstants';
-
-const StyledButton = styled.button`
-	height: 20px;
-	width: 60px;
-	cursor: ${({ disabled }) => (disabled ? 'arrow' : 'pointer')};
-	border: 0px;
-	color: ${styleConstants.PRIMARY_TEXT_COLOR};
-	background-color: ${({ disabled }) => (disabled ? 'gray' : styleConstants.BUTTON_COLOR)};
-	margin-left: 10px;
-
-	&:hover {
-		background-color: ${({ disabled }) => (disabled ? 'gray' : styleConstants.BUTTON_HOVER_COLOR)};
-	}
-`;
+import StringUtils from '../../stringUtils';
+import GameButtons from '../gameButtons';
 
 const StyledListItem = styled.li`
 	color: ${styleConstants.PRIMARY_TEXT_COLOR};
@@ -29,6 +17,14 @@ const StyledListItem = styled.li`
 	align-items: center;
 	list-style: none;
 	padding: 0px 20px;
+
+	> span {
+		padding-right: 5px;
+
+		&.game-list-item-viewers {
+			font-weight: bold;
+		}
+	}
 
 	&:hover {
 		background-color: ${styleConstants.ACCENT_COLOR};
@@ -41,31 +37,49 @@ const StyledGameName = styled.span`
 `;
 
 const GameListItem = ({
+	controlsEnabled,
 	name,
 	hits,
-	link,
+	date,
 	onGameClick,
+	serviceName,
 }) => (
 	<StyledListItem onClick={onGameClick}>
 		<StyledGameName>{name}</StyledGameName>
-		<span>{`Viewers: ${hits}`}</span>
-		<a href={link}>
-			<StyledButton>Watch</StyledButton>
-		</a>
-		<StyledButton disabled title="coming soon...">Track</StyledButton>
+		{
+			date
+				? (
+					<Fragment>
+						<span>{StringUtils.getDateWithTime(date)}</span>
+						<span>|</span>
+					</Fragment>
+				)
+				: null
+		}
+		<span className="game-list-item-viewers">{`Viewers: ${hits}`}</span>
+		{
+			controlsEnabled
+				? <GameButtons serviceName={serviceName} gameName={name} />
+				: null
+		}
 	</StyledListItem>
 );
 
 GameListItem.propTypes = {
 	...shapes.PopularListItem,
+	controlsEnabled: PropTypes.bool,
 	history: PropTypes.array.isRequired, // eslint-disable-line
+};
+
+GameListItem.defaultProps = {
+	controlsEnabled: true,
 };
 
 export default compose(
 	withRouter,
 	withHandlers({
 		onGameClick({ history, name, serviceName }) {
-			return () => history.push(`/pop-graph/${name}/${serviceName}`);
+			return () => history.push(`/gamehistory/${name}/${serviceName}`);
 		},
 	}),
 )(GameListItem);

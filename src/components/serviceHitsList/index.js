@@ -14,11 +14,12 @@ const ServiceHitsList = ({ gameName, serviceName }) => (
 			({ data: { Service = [] } = {} }) => (
 				<ul>
 					{
-						Service.map(({ game: { name }, hits }) => (
+						Service.map(({ game: { name }, hits, date }) => (
 							<GameListItem
 								hits={hits}
 								name={name}
-								link={`${constants.TWITCH_WATCH_URL}${name}`}
+								controlsEnabled={false}
+								date={new Date(Number(date))}
 								serviceName={constants.SERVICE_NAMES.TWITCH}
 							/>
 						))

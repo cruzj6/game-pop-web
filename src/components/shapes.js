@@ -4,6 +4,6 @@ export default {
 	PopularListItem: {
 		name: PropTypes.string.isRequired,
 		hits: PropTypes.string.isRequired,
-		link: PropTypes.string,
+		date: PropTypes.instanceOf(Date),
 	},
 };

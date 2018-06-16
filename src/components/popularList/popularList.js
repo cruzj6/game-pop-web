@@ -13,7 +13,9 @@ const StyledPopularList = styled.ul`
 const PopularList = ({ listItems, serviceName }) => (
 	<StyledPopularList>
 		{
-			listItems.map(item => <GameListItem {...item} name={item.game.name} link={`${constants.TWITCH_WATCH_URL}${item.game.name}`} serviceName={serviceName} />)
+			listItems.map(
+				item => <GameListItem {...item} name={item.game.name} serviceName={serviceName} />,
+			)
 		}
 	</StyledPopularList>
 );
