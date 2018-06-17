@@ -36,7 +36,7 @@ const StyledGameName = styled.span`
 	flex: 1 0 auto;
 `;
 
-const GameListItem = ({
+const GameServiceDataListItem = ({
 	controlsEnabled,
 	name,
 	hits,
@@ -59,27 +59,29 @@ const GameListItem = ({
 		<span className="game-list-item-viewers">{`Viewers: ${hits}`}</span>
 		{
 			controlsEnabled
-				? <GameButtons serviceName={serviceName} gameName={name} />
+				? <GameButtons serviceName={serviceName} name={name} />
 				: null
 		}
 	</StyledListItem>
 );
 
-GameListItem.propTypes = {
-	...shapes.PopularListItem,
+GameServiceDataListItem.propTypes = {
+	...shapes.ServiceData,
 	controlsEnabled: PropTypes.bool,
 	history: PropTypes.array.isRequired, // eslint-disable-line
 };
 
-GameListItem.defaultProps = {
+GameServiceDataListItem.defaultProps = {
 	controlsEnabled: true,
 };
 
-export default compose(
+const EnhancedGameServiceDataListItem = compose(
 	withRouter,
 	withHandlers({
 		onGameClick({ history, name, serviceName }) {
 			return () => history.push(`/gamehistory/${name}/${serviceName}`);
 		},
 	}),
-)(GameListItem);
+)(GameServiceDataListItem);
+
+export default EnhancedGameServiceDataListItem;

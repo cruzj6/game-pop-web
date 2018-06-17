@@ -1,16 +1,48 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
+import { Query } from 'react-apollo';
 import { compose, mapProps } from 'recompose';
-import PopularityChart from '../visualization/popularity';
-import ServiceHitsList from '../serviceHitsList';
 import GameButtons from '../gameButtons';
 import constants from '../../constants';
+import serviceQueries from '../../gqlQueries/services';
+import ServiceDataLine from '../visualization/serviceDataLine';
+import GameServiceDataList from '../gameServiceDataList';
+import StyledHeader from '../../styledComponents/styledHeading';
+
+const Heading = StyledHeader.extend`
+	display: inline-block;
+`;
+
+const getTwoWeeksAgo = () => {
+	const twoWeeksAgo = new Date();
+	twoWeeksAgo.setDate(twoWeeksAgo.getDate() - 14);
+	return twoWeeksAgo.getTime();
+};
 
 const GameHistory = ({ name, serviceName }) => (
 	<div>
-		<GameButtons serviceName={serviceName} gameName={name} />
-		<PopularityChart name={name} serviceName={serviceName} />
-		<ServiceHitsList gameName={name} serviceName={serviceName} />
+		<Heading>{name}</Heading>
+		<GameButtons
+			buttonSize="large"
+			serviceName={serviceName}
+			name={name}
+		/>
+		<Query
+			query={serviceQueries.SERVICE_QUERY}
+			variables={{ gameName: name, serviceName, fromDate: getTwoWeeksAgo() }}
+		>
+			{
+				({ data: { Service = [] } = {} }) => (
+					<Fragment>
+						<ServiceDataLine
+							name={name}
+							serviceData={Service}
+						/>
+						<GameServiceDataList serviceData={Service} />
+					</Fragment>
+				)
+			}
+		</Query>
 	</div>
 );
 

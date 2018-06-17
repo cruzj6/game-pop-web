@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Query } from 'react-apollo';
 import serviceQueries from '../../gqlQueries/services';
 import constants from '../../constants';
-import GameListItem from '../gameListItem';
+import GameServiceDataList from '../gameServiceDataList';
 
 const ServiceHitsList = ({ gameName, serviceName }) => (
 	<Query
@@ -12,19 +12,7 @@ const ServiceHitsList = ({ gameName, serviceName }) => (
 	>
 		{
 			({ data: { Service = [] } = {} }) => (
-				<ul>
-					{
-						Service.map(({ game: { name }, hits, date }) => (
-							<GameListItem
-								hits={hits}
-								name={name}
-								controlsEnabled={false}
-								date={new Date(Number(date))}
-								serviceName={constants.SERVICE_NAMES.TWITCH}
-							/>
-						))
-					}
-				</ul>
+				<GameServiceDataList serviceData={Service} />
 			)
 		}
 	</Query>

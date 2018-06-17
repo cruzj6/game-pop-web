@@ -5,6 +5,7 @@ import { Query } from 'react-apollo';
 import PopularList from './popularList';
 import serviceQueries from '../../gqlQueries/services';
 import constants from '../../constants';
+import StyledHeader from '../../styledComponents/styledHeading';
 
 export default compose(
 	setPropTypes({
@@ -12,7 +13,9 @@ export default compose(
 	}),
 )(({ serviceName }) => (
 	<div>
-		<h1>Top Games on {serviceName.toUpperCase()}</h1>
+		<StyledHeader>
+			Top Games on {serviceName.toUpperCase()} (Highest peak players during week)
+		</StyledHeader>
 		<Query query={serviceQueries.POPULAR_QUERY} variables={{ serviceName }}>
 			{
 				({ loading, error, data }) => {

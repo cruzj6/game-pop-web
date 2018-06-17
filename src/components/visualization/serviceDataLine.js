@@ -4,10 +4,8 @@ import * as d3 from 'd3';
 import ReactFauxDOM from 'react-faux-dom';
 import { compose, withHandlers, withState } from 'recompose';
 import styled from 'styled-components';
-import { Query } from 'react-apollo';
-import constants from '../../constants';
-import serviceQueries from '../../gqlQueries/services';
 import StringUtils from '../../stringUtils';
+import shapes from '../shapes';
 
 const StyledDiv = styled.div`
 	color: black;
@@ -41,53 +39,35 @@ const StyledChartDiv = styled.div`
 	}
 `;
 
-const getTwoWeeksAgo = () => {
-	const twoWeeksAgo = new Date();
-	twoWeeksAgo.setDate(twoWeeksAgo.getDate() - 14);
-	return twoWeeksAgo.getTime();
-};
-
-const PopularityChart = ({
+const ServiceDataLine = ({
 	displayedDate,
 	displayedHits,
 	renderChart,
-	name,
-	serviceName,
+	serviceData,
 }) => (
-	<Query
-		query={serviceQueries.SERVICE_QUERY}
-		variables={{ gameName: name, serviceName, fromDate: getTwoWeeksAgo() }}
-	>
-		{
-			({ data: { Service = [] } = {} }) => (
-				<StyledDiv>
-					<span>Here is some data for {name}</span>
-					<span>Hits: {displayedHits}</span>
-					<br />
-					<span>Date: {displayedDate && StringUtils.getMMDDYYYY(displayedDate)}</span>
-					<StyledChartDiv>
-						{renderChart(Service)}
-					</StyledChartDiv>
-				</StyledDiv>
-			)
-		}
-	</Query>
+	<StyledDiv>
+		<span>Hits: {displayedHits}</span>
+		<br />
+		<span>Date: {displayedDate && StringUtils.getMMDDYYYY(displayedDate)}</span>
+		<StyledChartDiv>
+			{renderChart(serviceData)}
+		</StyledChartDiv>
+	</StyledDiv>
 );
 
-PopularityChart.propTypes = {
+ServiceDataLine.propTypes = {
 	displayedDate: PropTypes.instanceOf(Date),
 	displayedHits: PropTypes.string,
 	renderChart: PropTypes.func.isRequired,
-	name: PropTypes.string.isRequired,
-	serviceName: PropTypes.oneOf(constants.SERVICE_NAMES).isRequired,
+	serviceData: PropTypes.arrayOf(PropTypes.shape(shapes.ServiceData)).isRequired,
 };
 
-PopularityChart.defaultProps = {
+ServiceDataLine.defaultProps = {
 	displayedDate: undefined,
 	displayedHits: '',
 };
 
-const EnhancedPopularityChart = compose(
+const EnhancedServiceDataLine = compose(
 	withState('displayedHits', 'setDisplayedHits', ''),
 	withState('displayedDate', 'setDisplayedDate'),
 	withHandlers({
@@ -113,6 +93,10 @@ const EnhancedPopularityChart = compose(
 				const chartSvg = d3.select(faux)
 					.style('height', px(GRAPH_HEIGHT))
 					.style('width', px(GRAPH_WIDTH))
+					.on('mouseleave', () => {
+						setDisplayedHits('');
+						setDisplayedDate('');
+					})
 					.append('g')
 					.style('height', px(GRAPH_HEIGHT))
 					.attr('transform', translate(0, 0));
@@ -144,7 +128,7 @@ const EnhancedPopularityChart = compose(
 							0,
 						)
 					))
-					.attr('width', pointRadius)
+					.attr('width', pointRadius * 2)
 					.attr('height', GRAPH_HEIGHT)
 					.attr('class', 'data-zone');
 
@@ -152,11 +136,6 @@ const EnhancedPopularityChart = compose(
 				dataPointZone.on('mouseover', ({ date, hits }) => {
 					setDisplayedHits(hits);
 					setDisplayedDate(new Date(Number(date)));
-				});
-
-				dataPointZone.on('mouseleave', () => {
-					setDisplayedHits('');
-					setDisplayedDate('');
 				});
 
 				// Create circle on graph to indicate data point
@@ -181,6 +160,6 @@ const EnhancedPopularityChart = compose(
 			};
 		},
 	}),
-)(PopularityChart);
+)(ServiceDataLine);
 
-export default EnhancedPopularityChart;
+export default EnhancedServiceDataLine;

@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import shapes from '../shapes';
 import constants from '../../constants';
-import GameListItem from '../gameListItem';
+import GameListItem from '../gameServiceDataList/item';
 
 const StyledPopularList = styled.ul`
 	margin: 0;
@@ -21,7 +21,7 @@ const PopularList = ({ listItems, serviceName }) => (
 );
 
 PopularList.propTypes = {
-	listItems: PropTypes.arrayOf(PropTypes.shape(shapes.PopularListItem)),
+	listItems: PropTypes.arrayOf(PropTypes.shape(shapes.ServiceData)),
 	serviceName: PropTypes.oneOf(constants.SERVICE_NAMES).isRequired,
 };
 

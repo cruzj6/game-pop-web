@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
 
 export default {
-	PopularListItem: {
-		name: PropTypes.string.isRequired,
-		hits: PropTypes.string.isRequired,
-		date: PropTypes.instanceOf(Date),
+	ServiceData: {
+		name: PropTypes.string,
+		date: PropTypes.string,
+		hits: PropTypes.number,
 	},
 };
