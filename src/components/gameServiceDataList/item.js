@@ -1,8 +1,6 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { compose, withHandlers } from 'recompose';
 import styled from 'styled-components';
-import { withRouter } from 'react-router-dom';
 import shapes from '../shapes';
 import styleConstants from '../styleConstants';
 import StringUtils from '../../stringUtils';
@@ -44,7 +42,7 @@ const GameServiceDataListItem = ({
 	onGameClick,
 	serviceName,
 }) => (
-	<StyledListItem onClick={onGameClick}>
+	<StyledListItem onClick={onGameClick ? () => onGameClick(name, serviceName) : undefined}>
 		<StyledGameName>{name}</StyledGameName>
 		{
 			date
@@ -75,13 +73,4 @@ GameServiceDataListItem.defaultProps = {
 	controlsEnabled: true,
 };
 
-const EnhancedGameServiceDataListItem = compose(
-	withRouter,
-	withHandlers({
-		onGameClick({ history, name, serviceName }) {
-			return () => history.push(`/gamehistory/${name}/${serviceName}`);
-		},
-	}),
-)(GameServiceDataListItem);
-
-export default EnhancedGameServiceDataListItem;
+export default GameServiceDataListItem;

@@ -1,6 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
+import { compose, withHandlers } from 'recompose';
+import { withRouter } from 'react-router-dom';
 import shapes from '../shapes';
 import constants from '../../constants';
 import GameListItem from '../gameServiceDataList/item';
@@ -10,11 +12,18 @@ const StyledPopularList = styled.ul`
 	padding: 0px;
 `;
 
-const PopularList = ({ listItems, serviceName }) => (
+const PopularList = ({ listItems, serviceName, onGameClick }) => (
 	<StyledPopularList>
 		{
 			listItems.map(
-				item => <GameListItem {...item} name={item.game.name} serviceName={serviceName} />,
+				item => (
+					<GameListItem
+						{...item}
+						onGameClick={onGameClick}
+						name={item.game.name}
+						serviceName={serviceName}
+					/>
+				),
 			)
 		}
 	</StyledPopularList>
@@ -23,10 +32,20 @@ const PopularList = ({ listItems, serviceName }) => (
 PopularList.propTypes = {
 	listItems: PropTypes.arrayOf(PropTypes.shape(shapes.ServiceData)),
 	serviceName: PropTypes.oneOf(constants.SERVICE_NAMES).isRequired,
+	onGameClick: PropTypes.func.isRequired,
 };
 
 PopularList.defaultProps = {
 	listItems: [],
 };
 
-export default PopularList;
+const EnhancedPopularList = compose(
+	withRouter,
+	withHandlers({
+		onGameClick({ history }) {
+			return (name, serviceName) => history.push(`/gamehistory/${name}/${serviceName}`);
+		},
+	}),
+)(PopularList);
+
+export default EnhancedPopularList;

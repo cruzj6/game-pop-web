@@ -14,7 +14,7 @@ export default compose(
 )(({ serviceName }) => (
 	<div>
 		<StyledHeader>
-			Top Games on {serviceName.toUpperCase()} (Highest peak players during week)
+			Top Games on {serviceName.toUpperCase()} (Highest peak players in last 7 days)
 		</StyledHeader>
 		<Query query={serviceQueries.POPULAR_QUERY} variables={{ serviceName }}>
 			{
