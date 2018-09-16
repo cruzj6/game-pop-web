@@ -8,7 +8,7 @@ import GameServiceDataList from '../gameServiceDataList';
 const ServiceHitsList = ({ gameName, serviceName }) => (
 	<Query
 		query={serviceQueries.SERVICE_QUERY}
-		variables={{ gameName, serviceName, fromDate: '1526571669043' }}
+		variables={{ gameName, serviceName, fromDate: '0' }}
 	>
 		{
 			({ data: { Service = [] } = {} }) => (

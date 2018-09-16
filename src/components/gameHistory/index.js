@@ -38,6 +38,7 @@ const GameHistory = ({ name, serviceName }) => (
 							name={name}
 							serviceData={Service}
 						/>
+						<h3>View history datapoints</h3>
 						<GameServiceDataList serviceData={Service} />
 					</Fragment>
 				)

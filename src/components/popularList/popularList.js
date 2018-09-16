@@ -31,8 +31,8 @@ const PopularList = ({ listItems, serviceName, onGameClick }) => (
 
 PopularList.propTypes = {
 	listItems: PropTypes.arrayOf(PropTypes.shape(shapes.ServiceData)),
-	serviceName: PropTypes.oneOf(constants.SERVICE_NAMES).isRequired,
 	onGameClick: PropTypes.func.isRequired,
+	serviceName: PropTypes.oneOf(Object.values(constants.SERVICE_NAMES)).isRequired,
 };
 
 PopularList.defaultProps = {

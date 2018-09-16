@@ -20,13 +20,15 @@ export default compose(
 			{
 				({ loading, error, data }) => {
 					if (error) {
-						return null;
+						return <span>Error fetching popular data for {serviceName} service</span>;
 					}
 					if (loading) {
 						return <span>Loading...</span>;
 					}
 
-					return <PopularList listItems={data.Popular} serviceName={serviceName} />;
+					return data.Popular.length > 0
+						? <PopularList listItems={data.Popular} serviceName={serviceName} />
+						: <span>Seems nothing was found for {serviceName} service</span>;
 				}
 			}
 		</Query>
