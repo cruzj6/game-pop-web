@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import ReactFauxDOM from 'react-faux-dom';
 import { compose, withHandlers, withState } from 'recompose';
 import styled from 'styled-components';
+import ReactTooltip from 'react-tooltip';
 import StringUtils from '../../../stringUtils';
 import shapes from '../../shapes';
 import ServiceDataGraphDrawer from './serviceDataGraphDrawer';
@@ -49,6 +50,11 @@ const ServiceDataLine = ({
 		<span>Hits: {displayedHits}</span>
 		<br />
 		<span>Date: {displayedDate && StringUtils.getMMDDYYYY(displayedDate)}</span>
+		<ReactTooltip afterShow={() => console.log('BAAH')} id="hits-tooltip">
+			<span>Hits: {displayedHits}</span>
+			<br />
+			<span>Date: {displayedDate && StringUtils.getMMDDYYYY(displayedDate)}</span>
+		</ReactTooltip>
 		<StyledChartDiv>
 			{renderChart(serviceData)}
 		</StyledChartDiv>

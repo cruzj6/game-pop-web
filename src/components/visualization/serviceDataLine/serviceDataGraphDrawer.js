@@ -47,7 +47,7 @@ const createRootSVG = (rootElement, onHitsHover, onDateHover) => (
 			onDateHover('');
 		})
 		.append('g')
-		.style('height', px(GRAPH_CONTAINER_HEIGHT))
+		.style('height', px(GRAPH_CONTAINER_HEIGHT - MARGIN_SIZE))
 		.attr('transform', translate(0, 0))
 );
 
@@ -95,6 +95,8 @@ const createDataPointCircles = (
 		))
 		.attr('width', GRAPH_POINT_CIRCLE_RADIUS * 2)
 		.attr('height', GRAPH_CONTAINER_HEIGHT)
+		// .attr('data-for', 'hits-tooltip')
+		// .attr('data-tip', 'data')
 		.attr('class', 'data-zone');
 
 	// Set displayed hits on mouseover
