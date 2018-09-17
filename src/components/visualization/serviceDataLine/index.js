@@ -56,7 +56,7 @@ const ServiceDataLine = ({
 );
 
 ServiceDataLine.propTypes = {
-	displayedDate: PropTypes.instanceOf(Date),
+	displayedDate: PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(Date)]),
 	displayedHits: PropTypes.string,
 	renderChart: PropTypes.func.isRequired,
 	serviceData: PropTypes.arrayOf(PropTypes.shape(shapes.ServiceData)).isRequired,

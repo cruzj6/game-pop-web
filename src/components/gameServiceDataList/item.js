@@ -66,7 +66,6 @@ const GameServiceDataListItem = ({
 GameServiceDataListItem.propTypes = {
 	...shapes.ServiceData,
 	controlsEnabled: PropTypes.bool,
-	history: PropTypes.array.isRequired, // eslint-disable-line
 };
 
 GameServiceDataListItem.defaultProps = {

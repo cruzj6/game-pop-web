@@ -9,6 +9,7 @@ const GameServiceDataList = ({ serviceData }) => (
 		{
 			serviceData.map(({ game: { name }, hits, date }) => (
 				<GameListItem
+					key={date}
 					hits={hits}
 					name={name}
 					controlsEnabled={false}
