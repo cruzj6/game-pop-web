@@ -51,6 +51,34 @@ const createRootSVG = (rootElement, onHitsHover, onDateHover) => (
 		.attr('transform', translate(0, 0))
 );
 
+const getScaledLineLength = (
+	serviceData,
+	scaleDomain,
+	scaleRange,
+) => {
+	const { length: lengthOfLine } = serviceData.reduce(({ prevCoords, length }, serviceItem) => {
+		const scaledCoordinates = {
+			x: scaleDomain(serviceItem.date),
+			y: scaleRange(serviceItem.hits),
+		};
+
+		const distance = Math.hypot(
+			scaledCoordinates.x - prevCoords.x,
+			scaledCoordinates.y - prevCoords.y,
+		);
+
+		return {
+			length: length + distance,
+			prevCoords: scaledCoordinates,
+		};
+	}, {
+		length: 0,
+		prevCoords: { x: 0, y: 0 },
+	});
+
+	return lengthOfLine;
+};
+
 const drawDataLine = (
 	graphSVG,
 	serviceData,
@@ -69,11 +97,15 @@ const drawDataLine = (
 		.attr('class', 'line')
 		.attr('d', line);
 
+	// Compute the total length of the line we are drawing.
+	// react-faux-dom doesn't implement the getTotalLength function
+	const lengthOfLine = getScaledLineLength(serviceData, scaleDomain, scaleRange);
+
 	path
-		.attr('stroke-dasharray', `${2222} ${2222}`) // TODO: there must be a better way to do this.PATH_END_Y.
-		.attr('stroke-dashoffset', 2222)
+		.attr('stroke-dasharray', `${lengthOfLine} ${lengthOfLine}`)
+		.attr('stroke-dashoffset', lengthOfLine)
 		.transition()
-		.duration(4000)
+		.duration(2000)
 		.ease(d3.easeLinear)
 		.attr('stroke-dashoffset', 0);
 };
@@ -103,8 +135,6 @@ const createDataPointCircles = (
 		))
 		.attr('width', GRAPH_POINT_CIRCLE_RADIUS * 2)
 		.attr('height', GRAPH_CONTAINER_HEIGHT)
-		// .attr('data-for', 'hits-tooltip')
-		// .attr('data-tip', 'data')
 		.attr('class', 'data-zone');
 
 	// Set displayed hits on mouseover

@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { withFauxDOM } from 'react-faux-dom';
 import { compose, withState } from 'recompose';
 import styled from 'styled-components';
-import ReactTooltip from 'react-tooltip';
 import StringUtils from '../../../stringUtils';
 import shapes from '../../shapes';
 import ServiceDataGraphDrawer from './serviceDataGraphDrawer';
@@ -60,6 +59,7 @@ class ServiceDataLine extends Component {
 			animateFauxDOM,
 		} = this.props;
 
+		// If we get new service data, re-draw and re-animate the graph
 		if (prevProps.serviceData !== serviceData) {
 			// Create faux DOM to write to
 			const faux = connectFauxDOM('svg', 'chart');
@@ -71,6 +71,7 @@ class ServiceDataLine extends Component {
 				setDisplayedDate,
 				displayedDate,
 			);
+
 			animateFauxDOM(4000);
 		}
 	}
@@ -87,11 +88,6 @@ class ServiceDataLine extends Component {
 				<span>Hits: {displayedHits}</span>
 				<br />
 				<span>Date: {displayedDate && StringUtils.getMMDDYYYY(displayedDate)}</span>
-				<ReactTooltip afterShow={() => console.log('BAAH')} id="hits-tooltip">
-					<span>Hits: {displayedHits}</span>
-					<br />
-					<span>Date: {displayedDate && StringUtils.getMMDDYYYY(displayedDate)}</span>
-				</ReactTooltip>
 				<StyledChartDiv>
 					{chart}
 				</StyledChartDiv>
