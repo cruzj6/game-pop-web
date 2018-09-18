@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import ReactFauxDOM from 'react-faux-dom';
-import { compose, withHandlers, withState } from 'recompose';
+import { withFauxDOM } from 'react-faux-dom';
+import { compose, withState } from 'recompose';
 import styled from 'styled-components';
 import ReactTooltip from 'react-tooltip';
 import StringUtils from '../../../stringUtils';
@@ -37,63 +37,90 @@ const StyledChartDiv = styled.div`
 	.data-zone {
 		stroke-opacity: 0;
 		fill-opacity: 0;
+
+		&:hover + .data-circle {
+			fill: green;
+		}
 	}
 `;
 
-const ServiceDataLine = ({
-	displayedDate,
-	displayedHits,
-	renderChart,
-	serviceData,
-}) => (
-	<StyledDiv>
-		<span>Hits: {displayedHits}</span>
-		<br />
-		<span>Date: {displayedDate && StringUtils.getMMDDYYYY(displayedDate)}</span>
-		<ReactTooltip afterShow={() => console.log('BAAH')} id="hits-tooltip">
-			<span>Hits: {displayedHits}</span>
-			<br />
-			<span>Date: {displayedDate && StringUtils.getMMDDYYYY(displayedDate)}</span>
-		</ReactTooltip>
-		<StyledChartDiv>
-			{renderChart(serviceData)}
-		</StyledChartDiv>
-	</StyledDiv>
-);
+class ServiceDataLine extends Component {
+	constructor(props) {
+		super(props);
+		this.state = {};
+	}
+
+	componentDidUpdate(prevProps) {
+		const {
+			serviceData,
+			setDisplayedHits,
+			setDisplayedDate,
+			displayedDate,
+			connectFauxDOM,
+			animateFauxDOM,
+		} = this.props;
+
+		if (prevProps.serviceData !== serviceData) {
+			// Create faux DOM to write to
+			const faux = connectFauxDOM('svg', 'chart');
+
+			ServiceDataGraphDrawer.draw(
+				faux,
+				serviceData,
+				setDisplayedHits,
+				setDisplayedDate,
+				displayedDate,
+			);
+			animateFauxDOM(4000);
+		}
+	}
+
+	render() {
+		const {
+			displayedDate,
+			displayedHits,
+			chart,
+		} = this.props;
+
+		return (
+			<StyledDiv>
+				<span>Hits: {displayedHits}</span>
+				<br />
+				<span>Date: {displayedDate && StringUtils.getMMDDYYYY(displayedDate)}</span>
+				<ReactTooltip afterShow={() => console.log('BAAH')} id="hits-tooltip">
+					<span>Hits: {displayedHits}</span>
+					<br />
+					<span>Date: {displayedDate && StringUtils.getMMDDYYYY(displayedDate)}</span>
+				</ReactTooltip>
+				<StyledChartDiv>
+					{chart}
+				</StyledChartDiv>
+			</StyledDiv>
+		);
+	}
+}
 
 ServiceDataLine.propTypes = {
+	connectFauxDOM: PropTypes.func.isRequired,
+	animateFauxDOM: PropTypes.func.isRequired,
+	chart: PropTypes.element,
 	displayedDate: PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(Date)]),
 	displayedHits: PropTypes.string,
-	renderChart: PropTypes.func.isRequired,
+	setDisplayedHits: PropTypes.func.isRequired,
+	setDisplayedDate: PropTypes.func.isRequired,
 	serviceData: PropTypes.arrayOf(PropTypes.shape(shapes.ServiceData)).isRequired,
 };
 
 ServiceDataLine.defaultProps = {
 	displayedDate: undefined,
 	displayedHits: '',
+	chart: null,
 };
 
 const EnhancedServiceDataLine = compose(
 	withState('displayedHits', 'setDisplayedHits', ''),
 	withState('displayedDate', 'setDisplayedDate'),
-	withHandlers({
-		renderChart({ setDisplayedHits, setDisplayedDate, displayedDate }) {
-			return (serviceData) => {
-				// Create faux DOM to write to
-				const faux = ReactFauxDOM.createElement('svg');
-
-				ServiceDataGraphDrawer.draw(
-					faux,
-					serviceData,
-					setDisplayedHits,
-					setDisplayedDate,
-					displayedDate,
-				);
-
-				return faux.toReact();
-			};
-		},
-	}),
+	withFauxDOM,
 )(ServiceDataLine);
 
 export default EnhancedServiceDataLine;

@@ -63,10 +63,19 @@ const drawDataLine = (
 		.y(serviceItem => scaleRange(serviceItem.hits));
 
 	// append a path element with the coords from the line
-	graphSVG.append('path')
-		.attr('class', 'line')
+	const path = graphSVG
+		.append('svg:path')
 		.data([serviceData])
+		.attr('class', 'line')
 		.attr('d', line);
+
+	path
+		.attr('stroke-dasharray', `${2222} ${2222}`) // TODO: there must be a better way to do this.PATH_END_Y.
+		.attr('stroke-dashoffset', 2222)
+		.transition()
+		.duration(4000)
+		.ease(d3.easeLinear)
+		.attr('stroke-dashoffset', 0);
 };
 
 const createDataPointCircles = (
@@ -76,7 +85,6 @@ const createDataPointCircles = (
 	scaleRange,
 	onHitsHover,
 	onDateHover,
-	displayedDate,
 ) => {
 	// Build mouseover data-point circles
 	const dataPoints = graphSVG.selectAll('g')
@@ -117,11 +125,7 @@ const createDataPointCircles = (
 		.attr('cx', GRAPH_POINT_CIRCLE_RADIUS)
 		.attr('cy', GRAPH_POINT_CIRCLE_RADIUS)
 		.attr('r', GRAPH_POINT_CIRCLE_RADIUS)
-		.attr('class', serviceItem => (
-			displayedDate && displayedDate.getTime().toString() === serviceItem.date
-				? 'data-circle-filled'
-				: 'data-circle'
-		));
+		.attr('class', 'data-circle');
 };
 
 const getValuesBetweenAtInterval = (min, max, count) => {
@@ -214,7 +218,6 @@ ServiceDataGraphDrawer.draw = (
 	serviceData,
 	onHitsHover,
 	onDateHover,
-	displayedDate,
 ) => {
 	if (serviceData && serviceData.length > 0) {
 		const { scaleDomain, scaleRange } = getScalingFunctions(serviceData);
@@ -228,7 +231,6 @@ ServiceDataGraphDrawer.draw = (
 			scaleRange,
 			onHitsHover,
 			onDateHover,
-			displayedDate,
 		);
 		drawXAxisLine(graphSVG, serviceData, scaleDomain);
 		drawYAxisLine(graphSVG, serviceData, scaleRange);
