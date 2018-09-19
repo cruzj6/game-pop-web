@@ -72,7 +72,7 @@ class ServiceDataLine extends Component {
 				displayedDate,
 			);
 
-			animateFauxDOM(4000);
+			animateFauxDOM(10000);
 		}
 	}
 

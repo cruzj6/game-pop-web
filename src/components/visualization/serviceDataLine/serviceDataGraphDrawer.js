@@ -20,6 +20,7 @@ const PATH_START_X = MARGIN_SIZE + GUIDE_LINES_WIDTH + GRAPH_POINT_CIRCLE_RADIUS
 const PATH_END_X = GRAPH_END_X - GRAPH_POINT_CIRCLE_RADIUS;
 const PATH_START_Y = MARGIN_SIZE + GRAPH_POINT_CIRCLE_RADIUS;
 const PATH_END_Y = GRAPH_CONTAINER_HEIGHT - MARGIN_SIZE - GRAPH_POINT_CIRCLE_RADIUS;
+const GRAPH_DRAW_DURATION = 750;
 
 const getScalingFunctions = (serviceData) => {
 	const scaleRange = d3
@@ -105,7 +106,7 @@ const drawDataLine = (
 		.attr('stroke-dasharray', `${lengthOfLine} ${lengthOfLine}`)
 		.attr('stroke-dashoffset', lengthOfLine)
 		.transition()
-		.duration(2000)
+		.duration(GRAPH_DRAW_DURATION)
 		.ease(d3.easeLinear)
 		.attr('stroke-dashoffset', 0);
 };
@@ -143,19 +144,29 @@ const createDataPointCircles = (
 		onDateHover(new Date(Number(date)));
 	});
 
+	const timeForEachPoint = GRAPH_DRAW_DURATION / serviceData.length;
+	const pointTransitionDuration = 1000;
+
 	// Create circle on graph to indicate data point
 	dataPoints
 		.append('circle')
+		.attr('cx', GRAPH_POINT_CIRCLE_RADIUS)
+		.attr('cy', GRAPH_POINT_CIRCLE_RADIUS)
+		.attr('r', GRAPH_POINT_CIRCLE_RADIUS)
+		.attr('class', 'data-circle')
+		.attr('transform', (serviceItem, index) => translate(
+			scaleDomain(serviceItem.date),
+			(index % 2 === 0) ? 0 : GRAPH_END_Y,
+		))
+		.transition()
+		.delay((_, index) => (index * timeForEachPoint) - pointTransitionDuration)
+		.duration(pointTransitionDuration)
 		.attr('transform', serviceItem => (
 			translate(
 				scaleDomain(serviceItem.date) - GRAPH_POINT_CIRCLE_RADIUS,
 				scaleRange(serviceItem.hits) - GRAPH_POINT_CIRCLE_RADIUS,
 			)
-		))
-		.attr('cx', GRAPH_POINT_CIRCLE_RADIUS)
-		.attr('cy', GRAPH_POINT_CIRCLE_RADIUS)
-		.attr('r', GRAPH_POINT_CIRCLE_RADIUS)
-		.attr('class', 'data-circle');
+		));
 };
 
 const getValuesBetweenAtInterval = (min, max, count) => {
@@ -198,7 +209,7 @@ const drawXAxisLine = (graphSVG, serviceData, scaleDomain) => {
 
 	textNodes
 		.append('tspan')
-		.text(marker => moment(marker).format('MM:DD'))
+		.text(marker => moment(marker).format('MM/DD'))
 		.attr('x', 0);
 
 	textNodes
