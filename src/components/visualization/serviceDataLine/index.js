@@ -6,24 +6,24 @@ import styled from 'styled-components';
 import StringUtils from '../../../stringUtils';
 import shapes from '../../shapes';
 import ServiceDataGraphDrawer from './serviceDataGraphDrawer';
+import styleConstants from '../../styleConstants';
 
 const StyledDiv = styled.div`
-	color: black;
-	background-color: white;
+	background-color: ${styleConstants.PRIMARY_COLOR};
 `;
 
 const StyledChartDiv = styled.div`
 	.line {
-		stroke: red;
-		fill: white;
+		stroke: ${styleConstants.ACCENT_COLOR};
+		fill: ${styleConstants.PRIMARY_COLOR};
 	}
 
 	.data-circle {
-		stroke: green;
+		stroke: ${styleConstants.SECONDARY_ACCENT_COLOR};
 		fill: white;
 
 		&:hover {
-			fill: green;
+			fill: ${styleConstants.SECONDARY_ACCENT_COLOR};
 			cursor: pointer;
 		}
 	}

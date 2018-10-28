@@ -1,5 +1,6 @@
 import * as d3 from 'd3';
 import moment from 'moment';
+import styleConstants from '../../styleConstants';
 
 const translate = (x, y) => `translate(${x}, ${y})`;
 const px = n => `${n}px`;
@@ -43,6 +44,7 @@ const createRootSVG = (rootElement, onHitsHover, onDateHover) => (
 	d3.select(rootElement)
 		.style('height', px(GRAPH_CONTAINER_HEIGHT))
 		.style('width', px(GRAPH_CONTAINER_WIDTH))
+		.style('background-color', styleConstants.PRIMARY_COLOR)
 		.on('mouseleave', () => {
 			onHitsHover('');
 			onDateHover('');
@@ -186,7 +188,7 @@ const drawXAxisLine = (graphSVG, serviceData, scaleDomain) => {
 		.attr('y1', GRAPH_CONTAINER_HEIGHT - MARGIN_SIZE)
 		.attr('x2', PATH_END_X)
 		.attr('y2', GRAPH_CONTAINER_HEIGHT - MARGIN_SIZE)
-		.attr('style', `stroke:rgb(0, 0, 0);stroke-width:${GUIDE_LINES_WIDTH}`);
+		.attr('style', `stroke:${styleConstants.PRIMARY_TEXT_COLOR};stroke-width:${GUIDE_LINES_WIDTH}`);
 
 	const X_MARKER_COUNT = 5;
 	const [minDate, maxDate] = d3.extent(serviceData, serviceItem => Number(serviceItem.date));
@@ -200,6 +202,7 @@ const drawXAxisLine = (graphSVG, serviceData, scaleDomain) => {
 		.data(dateMarkers)
 		.enter()
 		.append('text')
+		.attr('style', `fill:${styleConstants.PRIMARY_TEXT_COLOR};`)
 		.attr('transform', marker => (
 			translate(
 				scaleDomain(marker) - 30,
@@ -229,7 +232,7 @@ const drawYAxisLine = (graphSVG, serviceData, scaleRange) => {
 		.attr('y1', MARGIN_SIZE)
 		.attr('x2', MARGIN_SIZE)
 		.attr('y2', GRAPH_CONTAINER_HEIGHT - MARGIN_SIZE)
-		.attr('style', `stroke:rgb(0, 0, 0);stroke-width:${GUIDE_LINES_WIDTH}`);
+		.attr('style', `stroke:${styleConstants.PRIMARY_TEXT_COLOR};stroke-width:${GUIDE_LINES_WIDTH}`);
 
 	const Y_MARKER_COUNT = 5;
 	const maxHits = d3.max(serviceData, serviceItem => Number(serviceItem.hits));
@@ -243,6 +246,7 @@ const drawYAxisLine = (graphSVG, serviceData, scaleRange) => {
 		.data(hitsMarkers)
 		.enter()
 		.append('text')
+		.attr('style', `fill:${styleConstants.PRIMARY_TEXT_COLOR};`)
 		.attr('transform', marker => (
 			translate(
 				MARGIN_SIZE - 50,

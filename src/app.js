@@ -1,14 +1,19 @@
 import React from 'react';
 import styled from 'styled-components';
 import { HashRouter as Router, Route, Link } from 'react-router-dom';
-import PopularList from './components/popularList';
-import Search from './components/search';
-import constants from './constants';
+import Search from './routes/search';
 import styleConstants from './components/styleConstants';
 import GameHistory from './components/gameHistory';
+import Home from './routes/home';
+import Twitch from './routes/twitch';
+
+const StyledPageRoot = styled.div`
+	height: 100%;
+`;
 
 const StyledMain = styled.div`
 	display: flex;
+	height: 100%;
 `;
 
 const StyledHeader = styled.div`
@@ -27,12 +32,16 @@ const StyledNav = styled.ul`
 	padding: 0;
 	margin: 0 20px;
 	border: 1px solid ${styleConstants.ACCENT_COLOR};
-	border-radius: 4px;
 	height: fit-content;
 `;
 
 const StyledContent = styled.div`
 	flex: 1 0 auto;
+	height: 100%;
+	background-color: ${styleConstants.PRIMARY_COLOR};
+	padding: 10px;
+	margin-right: 20px;
+	margin-bottom: 20px;
 `;
 
 const StyledNavLink = styled.li`
@@ -62,7 +71,7 @@ const StyledNavLink = styled.li`
 
 const App = () => (
 	<Router>
-		<div>
+		<StyledPageRoot>
 			<StyledHeader>GamePop</StyledHeader>
 			<StyledMain>
 				<StyledNav>
@@ -78,13 +87,13 @@ const App = () => (
 				</StyledNav>
 
 				<StyledContent>
-					<Route exact path="/" component={() => <span>home</span>} />
+					<Route exact path="/" component={Home} />
 					<Route exact path="/search" component={Search} />
-					<Route path="/twitch" render={props => <PopularList {...props} serviceName={constants.SERVICE_NAMES.TWITCH} />} />
+					<Route path="/twitch" component={Twitch} />
 					<Route path="/gamehistory/:name/:serviceName" component={GameHistory} />
 				</StyledContent>
 			</StyledMain>
-		</div>
+		</StyledPageRoot>
 	</Router>
 );
 

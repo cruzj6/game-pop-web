@@ -15,6 +15,11 @@ injectGlobal`
 		background-color: ${styleConstants.PAGE_COLOR};
 		margin: 0;
 		width: auto;
+		max-height: 1000px;
+	}
+
+	#root {
+		height: 100%;
 	}
 `;
 /* eslint-enable no-unused-expressions */

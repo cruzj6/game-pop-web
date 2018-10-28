@@ -1,10 +1,18 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { compose, withState } from 'recompose';
+import styled from 'styled-components';
 import constants from '../../constants';
-import GameSearch from '../gameSearch';
-import ServiceHitsList from '../serviceHitsList';
-import ServiceSelection from '../serviceSelection';
+import GameSearch from '../../components/gameSearch';
+import ServiceHitsList from '../../components/serviceHitsList';
+import ServiceSelection from '../../components/serviceSelection';
+import styleConstants from '../../components/styleConstants';
+import Card from '../../components/card';
+
+const SearchContainer = styled(Card)`
+	background-color: ${styleConstants.PRIMARY_COLOR};
+	height: 100%;
+`;
 
 const Search = ({
 	setCurrentGameName,
@@ -12,11 +20,11 @@ const Search = ({
 	setSelectedService,
 	selectedService,
 }) => (
-	<Fragment>
+	<SearchContainer>
 		<GameSearch onSearch={setCurrentGameName} />
 		<ServiceSelection onSelect={setSelectedService} />
 		<ServiceHitsList gameName={currentGameName} serviceName={selectedService} />
-	</Fragment>
+	</SearchContainer>
 );
 
 Search.propTypes = {
