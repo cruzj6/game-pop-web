@@ -1,5 +1,6 @@
 export default {
 	GAMEPOP_GRAPHQL_URL: 'https://game-pop-graphql.herokuapp.com/graphql',
+	// GAMEPOP_GRAPHQL_URL: 'http://localhost:5000/graphql',
 	SERVICE_NAMES: {
 		TWITCH: 'TWITCH',
 		YOUTUBE: 'YOUTUBE',

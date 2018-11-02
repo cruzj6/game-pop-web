@@ -35,7 +35,7 @@ const rangeDays = {
 const getDateFromRangeOption = (rangeOption) => {
 	const rangeAgo = new Date();
 	rangeAgo.setDate(rangeAgo.getDate() - rangeDays[rangeOption]);
-	return rangeAgo.getTime();
+	return rangeAgo.getTime().toString();
 };
 
 const GameHistory = ({
