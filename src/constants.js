@@ -5,4 +5,10 @@ export default {
 		YOUTUBE: 'YOUTUBE',
 	},
 	TWITCH_WATCH_URL: 'https://www.twitch.tv/directory/game/',
+	DATE_RANGE_OPTIONS: {
+		ONE_WEEK: 'ONE_WEEK',
+		TWO_WEEKS: 'TWO_WEEKS',
+		ONE_MONTH: 'ONE_MONTH',
+		SIX_MONTHS: 'SIX_MONTHS',
+	},
 };

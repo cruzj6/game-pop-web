@@ -19,7 +19,6 @@ const StyledMain = styled.div`
 const StyledHeader = styled.div`
 	height: 35px;
 	background-color: ${styleConstants.PRIMARY_COLOR};
-	margin-bottom: 25px;
 	display: flex;
 	align-items: center;
 	padding: 0px 20px;
@@ -30,9 +29,10 @@ const StyledNav = styled.ul`
 	list-style: none;
 	flex: 0 0 150px;
 	padding: 0;
-	margin: 0 20px;
+	margin: 0;
+	height: 100%;
 	border: 1px solid ${styleConstants.ACCENT_COLOR};
-	height: fit-content;
+	border-top: 0;
 `;
 
 const StyledContent = styled.div`
@@ -40,7 +40,6 @@ const StyledContent = styled.div`
 	height: 100%;
 	background-color: ${styleConstants.PRIMARY_COLOR};
 	padding: 10px;
-	margin-right: 20px;
 	margin-bottom: 20px;
 `;
 

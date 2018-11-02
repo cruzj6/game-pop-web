@@ -25,6 +25,7 @@ const PopularList = ({
 				item => (
 					<GameListItem
 						{...item}
+						key={item.game.name}
 						onGameClick={onGameClick}
 						name={item.game.name}
 						serviceName={serviceName}

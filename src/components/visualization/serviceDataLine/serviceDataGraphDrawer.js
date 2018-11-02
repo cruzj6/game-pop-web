@@ -87,6 +87,7 @@ const drawDataLine = (
 	serviceData,
 	scaleDomain,
 	scaleRange,
+	skipAnimation,
 ) => {
 	// get line coords
 	const line = d3.line()
@@ -104,20 +105,25 @@ const drawDataLine = (
 	// react-faux-dom doesn't implement the getTotalLength function
 	const lengthOfLine = getScaledLineLength(serviceData, scaleDomain, scaleRange);
 
-	path
-		.attr('stroke-dasharray', `${lengthOfLine} ${lengthOfLine}`)
-		.attr('stroke-dashoffset', lengthOfLine)
-		.transition()
-		.duration(GRAPH_DRAW_DURATION)
-		.ease(d3.easeLinear)
-		.attr('stroke-dashoffset', 0);
+	if (skipAnimation) {
+		path
+			.attr('stroke-dasharray', `${lengthOfLine} ${lengthOfLine}`)
+			.attr('stroke-dashoffset', 0);
+	} else {
+		path
+			.attr('stroke-dasharray', `${lengthOfLine} ${lengthOfLine}`)
+			.attr('stroke-dashoffset', lengthOfLine)
+			.transition()
+			.duration(GRAPH_DRAW_DURATION)
+			.ease(d3.easeLinear)
+			.attr('stroke-dashoffset', 0);
+	}
 };
 
-const createDataPointCircles = (
+const createDataPointZones = (
 	graphSVG,
 	serviceData,
 	scaleDomain,
-	scaleRange,
 	onHitsHover,
 	onDateHover,
 ) => {
@@ -146,11 +152,20 @@ const createDataPointCircles = (
 		onDateHover(new Date(Number(date)));
 	});
 
+	return dataPoints;
+};
+
+const createDataPointCircles = (
+	dataPointElements,
+	serviceData,
+	scaleDomain,
+	scaleRange,
+) => {
 	const timeForEachPoint = GRAPH_DRAW_DURATION / serviceData.length;
-	const pointTransitionDuration = 1000;
+	const pointTransitionDuration = 500;
 
 	// Create circle on graph to indicate data point
-	dataPoints
+	dataPointElements
 		.append('circle')
 		.attr('cx', GRAPH_POINT_CIRCLE_RADIUS)
 		.attr('cy', GRAPH_POINT_CIRCLE_RADIUS)
@@ -263,20 +278,30 @@ ServiceDataGraphDrawer.draw = (
 	serviceData,
 	onHitsHover,
 	onDateHover,
+	showDataPointCircles,
+	skipAnimation,
 ) => {
 	if (serviceData && serviceData.length > 0) {
 		const { scaleDomain, scaleRange } = getScalingFunctions(serviceData);
 		const graphSVG = createRootSVG(rootElement, onHitsHover, onDateHover);
 
-		drawDataLine(graphSVG, serviceData, scaleDomain, scaleRange);
-		createDataPointCircles(
+		drawDataLine(graphSVG, serviceData, scaleDomain, scaleRange, skipAnimation);
+		const dataPointElements = createDataPointZones(
 			graphSVG,
 			serviceData,
 			scaleDomain,
-			scaleRange,
 			onHitsHover,
 			onDateHover,
 		);
+
+		if (showDataPointCircles) {
+			createDataPointCircles(
+				dataPointElements,
+				serviceData,
+				scaleDomain,
+				scaleRange,
+			);
+		}
 		drawXAxisLine(graphSVG, serviceData, scaleDomain);
 		drawYAxisLine(graphSVG, serviceData, scaleRange);
 	}

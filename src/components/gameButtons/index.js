@@ -1,7 +1,12 @@
 import React, { Fragment } from 'react';
+import styled from 'styled-components';
 import StyledButton from '../../styledComponents/styledButton';
 import constants from '../../constants';
 import gameServiceUtils from '../../utils/gameServiceUtils';
+
+const SpacedOutButton = styled(StyledButton)`
+	margin-left: 10px;
+`;
 
 const getButtonsForService = (serviceName, props) => {
 	const buttonSize = {
@@ -13,9 +18,9 @@ const getButtonsForService = (serviceName, props) => {
 		return (
 			<Fragment>
 				<a href={gameServiceUtils.getGameLinkForService(props.name, serviceName)}>
-					<StyledButton {...buttonSize} >Watch</StyledButton>
+					<SpacedOutButton {...buttonSize} >Watch</SpacedOutButton>
 				</a>
-				<StyledButton {...buttonSize} disabled title="coming soon...">Track</StyledButton>
+				<SpacedOutButton {...buttonSize} disabled title="coming soon...">Track</SpacedOutButton>
 			</Fragment>
 		);
 	default:

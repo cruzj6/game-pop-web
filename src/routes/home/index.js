@@ -7,6 +7,7 @@ import constants from '../../constants';
 const TopGamesSummaryDiv = styled.div`
 	display: flex;
 	flex-direction: row;
+	flex-wrap: wrap;
 `;
 
 const Home = ({ history }) => (

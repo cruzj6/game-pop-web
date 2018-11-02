@@ -49,31 +49,29 @@ class ServiceDataLine extends Component {
 		this.state = {};
 	}
 
-	componentDidUpdate(prevProps) {
+	componentDidMount() {
 		const {
 			serviceData,
 			setDisplayedHits,
 			setDisplayedDate,
-			displayedDate,
 			connectFauxDOM,
 			animateFauxDOM,
+			showDataPointCircles,
 		} = this.props;
 
-		// If we get new service data, re-draw and re-animate the graph
-		if (prevProps.serviceData !== serviceData) {
-			// Create faux DOM to write to
-			const faux = connectFauxDOM('svg', 'chart');
+		// Create faux DOM to write to
+		const faux = connectFauxDOM('svg', 'chart');
 
-			ServiceDataGraphDrawer.draw(
-				faux,
-				serviceData,
-				setDisplayedHits,
-				setDisplayedDate,
-				displayedDate,
-			);
+		ServiceDataGraphDrawer.draw(
+			faux,
+			serviceData,
+			setDisplayedHits,
+			setDisplayedDate,
+			showDataPointCircles,
+			serviceData.length > 200,
+		);
 
-			animateFauxDOM(10000);
-		}
+		animateFauxDOM(5000);
 	}
 
 	render() {
@@ -105,12 +103,14 @@ ServiceDataLine.propTypes = {
 	setDisplayedHits: PropTypes.func.isRequired,
 	setDisplayedDate: PropTypes.func.isRequired,
 	serviceData: PropTypes.arrayOf(PropTypes.shape(shapes.ServiceData)).isRequired,
+	showDataPointCircles: PropTypes.bool,
 };
 
 ServiceDataLine.defaultProps = {
 	displayedDate: undefined,
 	displayedHits: '',
 	chart: null,
+	showDataPointCircles: false,
 };
 
 const EnhancedServiceDataLine = compose(

@@ -2,7 +2,7 @@ import gql from 'graphql-tag';
 
 const serviceQueries = {
 	SERVICE_QUERY: gql`
-			query ServiceQuery($gameName: String!, $serviceName: ServiceType!, $fromDate: String!, $maxResults: Int = 100) {
+			query ServiceQuery($gameName: String!, $serviceName: ServiceType!, $fromDate: String!, $maxResults: Int) {
 				Service (
 					gameName: $gameName,
 					date: $fromDate,

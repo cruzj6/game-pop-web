@@ -7,7 +7,7 @@ import PopularList from '../popularList';
 import Card from '../card';
 
 const TopCard = styled(Card)`
-	min-width: 300px;
+	width: 800px;
 	padding: 0;
 `;
 
@@ -35,7 +35,7 @@ const TopForServiceCard = ({ serviceName }) => (
 	<TopCard>
 		<TopSummaryHeadingContainer>
 			<TopSummaryHeading>
-				Top games for {messageBundle.SERVICE_NAME_STRINGS[serviceName]}
+				Top games on {messageBundle.SERVICE_NAME_STRINGS[serviceName]} this week
 			</TopSummaryHeading>
 		</TopSummaryHeadingContainer>
 		<TopForServiceUl>
