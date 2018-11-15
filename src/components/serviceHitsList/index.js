@@ -1,13 +1,32 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Query } from 'react-apollo';
-import serviceQueries from '../../gqlQueries/services';
+import gql from 'graphql-tag';
+import { compose, withHandlers } from 'recompose';
+import { withRouter } from 'react-router-dom';
 import constants from '../../constants';
 import GameServiceDataList from '../gameServiceDataList';
 
-const ServiceHitsList = ({ gameName, serviceName }) => (
+const GAME_ON_SERVICE_QUERY = gql`
+	query GameOnService($gameName: String!, $serviceName: ServiceType!, $fromDate: String!, $maxResults: Int) {
+		Service (
+			gameName: $gameName,
+			date: $fromDate,
+			maxResults: $maxResults,
+			serviceName: $serviceName
+		) {
+			game {
+				name
+			},
+			hits,
+			date
+		}
+	}
+`;
+
+const ServiceHitsList = ({ onItemClick, gameName, serviceName }) => (
 	<Query
-		query={serviceQueries.SERVICE_QUERY}
+		query={GAME_ON_SERVICE_QUERY}
 		variables={{
 			maxResults: 1,
 			gameName,
@@ -17,7 +36,7 @@ const ServiceHitsList = ({ gameName, serviceName }) => (
 	>
 		{
 			({ data: { Service = [] } = {} }) => (
-				<GameServiceDataList serviceData={Service} />
+				<GameServiceDataList onItemClick={onItemClick} serviceData={Service} />
 			)
 		}
 	</Query>
@@ -26,6 +45,14 @@ const ServiceHitsList = ({ gameName, serviceName }) => (
 ServiceHitsList.propTypes = {
 	gameName: PropTypes.string.isRequired,
 	serviceName: PropTypes.oneOf(Object.values(constants.SERVICE_NAMES)).isRequired,
+	onItemClick: PropTypes.func.isRequired,
 };
 
-export default ServiceHitsList;
+export default compose(
+	withRouter,
+	withHandlers({
+		onItemClick({ history }) {
+			return (name, serviceName) => history.push(`/gamehistory/${name}/${serviceName}`);
+		},
+	}),
+)(ServiceHitsList);

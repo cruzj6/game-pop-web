@@ -1,13 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { compose, withStateHandlers, withHandlers } from 'recompose';
-import StyledButton from '../../styledComponents/styledButton';
-import StyledInput from '../../styledComponents/styledInput';
+import InputWithButton from '../../styledComponents/inputWithButton';
 
 const GameSearch = ({ onSearch, setSearchText }) => (
 	<div>
-		<StyledInput onChange={setSearchText} placeholder="search for game..." />
-		<StyledButton onClick={onSearch}>Search</StyledButton>
+		<InputWithButton
+			onChange={setSearchText}
+			placeholder="search for game..."
+			onSubmit={onSearch}
+			buttonText="Search"
+		/>
 	</div>
 );
 

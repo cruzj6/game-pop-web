@@ -10,14 +10,12 @@ const TopGamesSummaryDiv = styled.div`
 	flex-wrap: wrap;
 `;
 
-const Home = ({ history }) => (
+const Home = () => (
 	<TopGamesSummaryDiv>
 		<TopForServiceCard
-			history={history}
 			serviceName={constants.SERVICE_NAMES.TWITCH}
 		/>
 		<TopForServiceCard
-			history={history}
 			topGames={[]}
 			serviceName={constants.SERVICE_NAMES.YOUTUBE}
 		/>

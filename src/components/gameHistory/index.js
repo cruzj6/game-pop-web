@@ -4,9 +4,9 @@ import { Query } from 'react-apollo';
 import { compose, mapProps, withState } from 'recompose';
 import styled from 'styled-components';
 import * as R from 'ramda';
+import gql from 'graphql-tag';
 import GameButtons from '../gameButtons';
 import constants from '../../constants';
-import serviceQueries from '../../gqlQueries/services';
 import ServiceDataLine from '../visualization/serviceDataLine';
 import GameServiceDataList from '../gameServiceDataList';
 import StyledHeader from '../../styledComponents/styledHeading';
@@ -38,6 +38,21 @@ const getDateFromRangeOption = (rangeOption) => {
 	return rangeAgo.getTime().toString();
 };
 
+const GAME_HISTORY_QUERY = gql`
+	query GameHistoryQuery($gameName: String!, $serviceName: ServiceType!, $fromDate: String!, $maxResults: Int) {
+		Service (
+			gameName: $gameName,
+			date: $fromDate,
+			maxResults: $maxResults,
+			serviceName: $serviceName
+		) {
+			...gameListItem
+		}
+	}
+
+	${GameServiceDataList.fragments}
+`;
+
 const GameHistory = ({
 	name,
 	serviceName,
@@ -66,7 +81,7 @@ const GameHistory = ({
 			}
 		</RangeSelectButtons>
 		<Query
-			query={serviceQueries.SERVICE_QUERY}
+			query={GAME_HISTORY_QUERY}
 			variables={{ gameName: name, serviceName, fromDate: getDateFromRangeOption(selectedRange) }}
 		>
 			{

@@ -4,7 +4,7 @@ import GameListItem from './item';
 import constants from '../../constants';
 import shapes from '../shapes';
 
-const GameServiceDataList = ({ serviceData }) => (
+const GameServiceDataList = ({ onItemClick, serviceData }) => (
 	<ul>
 		{
 			serviceData.map(({ game: { name }, hits, date }) => (
@@ -12,6 +12,7 @@ const GameServiceDataList = ({ serviceData }) => (
 					key={date}
 					hits={hits}
 					name={name}
+					onGameClick={onItemClick}
 					controlsEnabled={false}
 					date={new Date(Number(date))}
 					serviceName={constants.SERVICE_NAMES.TWITCH}
@@ -23,6 +24,13 @@ const GameServiceDataList = ({ serviceData }) => (
 
 GameServiceDataList.propTypes = {
 	serviceData: PropTypes.arrayOf(PropTypes.shape(shapes.ServiceData)).isRequired,
+	onItemClick: PropTypes.func,
 };
+
+GameServiceDataList.defaultProps = {
+	onItemClick: undefined,
+};
+
+GameServiceDataList.fragments = GameListItem.fragments;
 
 export default GameServiceDataList;

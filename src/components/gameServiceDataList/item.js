@@ -1,6 +1,7 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import gql from 'graphql-tag';
 import shapes from '../shapes';
 import styleConstants from '../styleConstants';
 import StringUtils from '../../stringUtils';
@@ -71,5 +72,15 @@ GameServiceDataListItem.propTypes = {
 GameServiceDataListItem.defaultProps = {
 	controlsEnabled: true,
 };
+
+GameServiceDataListItem.fragments = gql`
+	fragment gameListItem on ServiceDataItem {
+		game {
+			name
+		}
+		hits
+		date
+	}
+`;
 
 export default GameServiceDataListItem;

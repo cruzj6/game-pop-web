@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { compose, withHandlers } from 'recompose';
+import { withRouter } from 'react-router-dom';
 import messageBundle from '../../messageBundle';
 import PopularList from '../popularList';
 import Card from '../card';
@@ -54,6 +55,7 @@ TopForServiceCard.defaultProps = {
 };
 
 const EnhancedTopForServiceCard = compose(
+	withRouter,
 	withHandlers({
 		onGameClick({ history }) {
 			return (name, serviceName) => () => history.push(`/gamehistory/${name}/${serviceName}`);

@@ -5,8 +5,8 @@ const StyledInput = styled.input`
 	border: 1px solid ${styleConstants.PRIMARY_TEXT_COLOR};
 	color: ${styleConstants.PRIMARY_TEXT_COLOR};
 	background-color: ${styleConstants.SECONDARY_COLOR};
-	height: 20px;
-	padding: 3px;
+	height: ${styleConstants.DEFAULT_INPUT_HEIGHT};
+	padding: ${styleConstants.DEFAULT_INPUT_PADDING};
 	margin-bottom: 5px;
 	outline: none;
 
