@@ -22,6 +22,7 @@ const StyledListItem = styled.li`
 
 		&.game-list-item-viewers {
 			font-weight: bold;
+			white-space: nowrap;
 		}
 	}
 
@@ -32,7 +33,8 @@ const StyledListItem = styled.li`
 `;
 
 const StyledGameName = styled.span`
-	flex: 1 0 auto;
+	flex: 1 1 auto;
+	white-space: nowrap;
 `;
 
 const GameServiceDataListItem = ({

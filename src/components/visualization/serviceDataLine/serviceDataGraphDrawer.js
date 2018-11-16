@@ -261,14 +261,14 @@ const drawYAxisLine = (graphSVG, serviceData, scaleRange) => {
 		.data(hitsMarkers)
 		.enter()
 		.append('text')
-		.attr('style', `fill:${styleConstants.PRIMARY_TEXT_COLOR};`)
+		.attr('style', `fill:${styleConstants.PRIMARY_TEXT_COLOR}; text-anchor:end;`)
 		.attr('transform', marker => (
 			translate(
-				MARGIN_SIZE - 50,
+				MARGIN_SIZE - 10,
 				scaleRange(marker) + GRAPH_POINT_CIRCLE_RADIUS,
 			)
 		))
-		.text(hits => hits);
+		.text(hits => `${Math.round(hits / 1000)}k`);
 };
 
 const ServiceDataGraphDrawer = {};

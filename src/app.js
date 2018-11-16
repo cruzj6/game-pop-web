@@ -36,7 +36,7 @@ const StyledNav = styled.ul`
 `;
 
 const StyledContent = styled.div`
-	flex: 1 0 auto;
+	flex: 1 1 auto;
 	height: 100%;
 	background-color: ${styleConstants.PRIMARY_COLOR};
 	padding: 10px;

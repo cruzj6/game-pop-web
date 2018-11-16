@@ -8,8 +8,8 @@ import PopularList from '../popularList';
 import Card from '../card';
 
 const TopCard = styled(Card)`
-	width: 800px;
 	padding: 0;
+	flex: 1 1 400px;
 `;
 
 const TopForServiceUl = styled.ul`
@@ -32,22 +32,33 @@ const TopSummaryHeading = styled.h3`
 	vertical-align: middle;
 `;
 
-const TopForServiceCard = ({ serviceName }) => (
+const SeeMoreAnchor = styled.a`
+	padding: .5rem;
+	display: inline-block;
+	cursor: pointer;
+
+	&:hover {
+		text-decoration: underline;
+	}
+`;
+
+const TopForServiceCard = ({ onSeeMore, serviceName }) => (
 	<TopCard>
 		<TopSummaryHeadingContainer>
 			<TopSummaryHeading>
-				Top games on {messageBundle.SERVICE_NAME_STRINGS[serviceName]} this week
+				Top games on {messageBundle.SERVICE_NAME_STRINGS[serviceName]} this week (Highest Peak)
 			</TopSummaryHeading>
 		</TopSummaryHeadingContainer>
 		<TopForServiceUl>
 			<PopularList max={15} serviceName={serviceName} />
 		</TopForServiceUl>
-		<a>See More</a>
+		<SeeMoreAnchor onClick={onSeeMore}>See More</SeeMoreAnchor>
 	</TopCard>
 );
 
 TopForServiceCard.propTypes = {
 	serviceName: PropTypes.string,
+	onSeeMore: PropTypes.func.isRequired,
 };
 
 TopForServiceCard.defaultProps = {
@@ -57,8 +68,11 @@ TopForServiceCard.defaultProps = {
 const EnhancedTopForServiceCard = compose(
 	withRouter,
 	withHandlers({
-		onGameClick({ history }) {
-			return (name, serviceName) => () => history.push(`/gamehistory/${name}/${serviceName}`);
+		onGameClick({ history, serviceName }) {
+			return name => () => history.push(`/gamehistory/${name}/${serviceName}`);
+		},
+		onSeeMore({ history, serviceName }) {
+			return () => history.push(`/${serviceName}`);
 		},
 	}),
 )(TopForServiceCard);
