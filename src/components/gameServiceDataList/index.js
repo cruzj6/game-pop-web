@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import gql from 'graphql-tag';
 import GameListItem from './item';
 import constants from '../../constants';
 import shapes from '../shapes';
@@ -31,6 +32,13 @@ GameServiceDataList.defaultProps = {
 	onItemClick: undefined,
 };
 
-GameServiceDataList.fragments = GameListItem.fragments;
-
+GameServiceDataList.fragments = gql`
+	fragment gameListItem on ServiceDataItem {
+		game {
+			name
+		}
+		hits
+		date
+	}
+`;
 export default GameServiceDataList;

@@ -8,10 +8,10 @@ import gql from 'graphql-tag';
 import GameButtons from '../gameButtons';
 import constants from '../../constants';
 import ServiceDataLine from '../visualization/serviceDataLine';
-import GameServiceDataList from '../gameServiceDataList';
 import StyledHeader from '../../styledComponents/styledHeading';
 import messageBundle from '../../messageBundle';
 import StyledButton from '../../styledComponents/styledButton';
+import GameDataPointList from '../gameDataPointList';
 
 const RangeSelectButtons = styled.div`
 	margin: 20px 20px 20px 0;
@@ -46,11 +46,11 @@ const GAME_HISTORY_QUERY = gql`
 			maxResults: $maxResults,
 			serviceName: $serviceName
 		) {
-			...gameListItem
+			...dataPoint
 		}
 	}
 
-	${GameServiceDataList.fragments}
+	${GameDataPointList.fragments}
 `;
 
 const GameHistory = ({
@@ -109,7 +109,7 @@ const GameHistory = ({
 							}
 						</GraphContainerDiv>
 						<h3>View history datapoints</h3>
-						<GameServiceDataList serviceData={Service} />
+						<GameDataPointList dataPoints={Service} />
 					</Fragment>
 				)
 			}

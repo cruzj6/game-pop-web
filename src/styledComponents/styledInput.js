@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import styleConstants from '../components/styleConstants';
+import styleConstants from '../styleConstants';
 
 const StyledInput = styled.input`
 	border: 1px solid ${styleConstants.PRIMARY_TEXT_COLOR};

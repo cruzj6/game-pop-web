@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import styleConstants from '../components/styleConstants';
+import styleConstants from '../styleConstants';
 
 const small = {
 	'min-width': '60px',

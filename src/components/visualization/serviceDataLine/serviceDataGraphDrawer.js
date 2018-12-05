@@ -1,6 +1,6 @@
 import * as d3 from 'd3';
 import moment from 'moment';
-import styleConstants from '../../styleConstants';
+import styleConstants from '../../../styleConstants';
 
 const translate = (x, y) => `translate(${x}, ${y})`;
 const px = n => `${n}px`;

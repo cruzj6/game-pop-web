@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 import { ApolloProvider } from 'react-apollo';
 import App from './app';
 import apolloClient from './apolloClient';
-import styleConstants from './components/styleConstants';
+import styleConstants from './styleConstants';
 import '../index.html';
 
 /* eslint-disable no-unused-expressions */

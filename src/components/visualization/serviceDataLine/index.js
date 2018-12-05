@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import StringUtils from '../../../stringUtils';
 import shapes from '../../shapes';
 import ServiceDataGraphDrawer from './serviceDataGraphDrawer';
-import styleConstants from '../../styleConstants';
+import styleConstants from '../../../styleConstants';
 
 const StyledDiv = styled.div`
 	background-color: ${styleConstants.PRIMARY_COLOR};

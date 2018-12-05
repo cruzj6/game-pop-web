@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import StyledInput from './styledInput';
 import StyledButton from './styledButton';
-import styleConstants from '../components/styleConstants';
+import styleConstants from '../styleConstants';
 
 const InputBox = styled(StyledInput)`
 	border-right: 0;

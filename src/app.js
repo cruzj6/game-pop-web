@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { HashRouter as Router, Route, Link } from 'react-router-dom';
 import Search from './routes/search';
-import styleConstants from './components/styleConstants';
+import styleConstants from './styleConstants';
 import GameHistory from './components/gameHistory';
 import Home from './routes/home';
 import Twitch from './routes/twitch';

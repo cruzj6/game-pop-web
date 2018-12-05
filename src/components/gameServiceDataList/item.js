@@ -1,34 +1,16 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import gql from 'graphql-tag';
 import shapes from '../shapes';
-import styleConstants from '../styleConstants';
 import StringUtils from '../../stringUtils';
 import GameButtons from '../gameButtons';
+import StyledListItem from '../../styledComponents/styledListItem';
 
-const StyledListItem = styled.li`
-	color: ${styleConstants.PRIMARY_TEXT_COLOR};
-	background-color: ${styleConstants.SECONDARY_COLOR};
-	border: 1px solid ${styleConstants.PRIMARY_COLOR};
-	height: 30px;
-	display: flex;
-	align-items: center;
-	list-style: none;
-	padding: 0px 20px;
-
-	> span {
+const Viewers = styled.span`
+	&.game-list-item-viewers {
 		padding-right: 5px;
-
-		&.game-list-item-viewers {
-			font-weight: bold;
-			white-space: nowrap;
-		}
-	}
-
-	&:hover {
-		background-color: ${styleConstants.ACCENT_COLOR};
-		cursor: pointer;
+		font-weight: bold;
+		white-space: nowrap;
 	}
 `;
 
@@ -57,7 +39,7 @@ const GameServiceDataListItem = ({
 				)
 				: null
 		}
-		<span className="game-list-item-viewers">{`Viewers: ${hits}`}</span>
+		<Viewers>{`Viewers: ${hits}`}</Viewers>
 		{
 			controlsEnabled
 				? <GameButtons serviceName={serviceName} name={name} />
@@ -74,15 +56,5 @@ GameServiceDataListItem.propTypes = {
 GameServiceDataListItem.defaultProps = {
 	controlsEnabled: true,
 };
-
-GameServiceDataListItem.fragments = gql`
-	fragment gameListItem on ServiceDataItem {
-		game {
-			name
-		}
-		hits
-		date
-	}
-`;
 
 export default GameServiceDataListItem;

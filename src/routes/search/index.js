@@ -6,7 +6,7 @@ import constants from '../../constants';
 import GameSearch from '../../components/gameSearch';
 import ServiceHitsList from '../../components/serviceHitsList';
 import ServiceSelection from '../../components/serviceSelection';
-import styleConstants from '../../components/styleConstants';
+import styleConstants from '../../styleConstants';
 import Card from '../../components/card';
 
 const SearchContainer = styled(Card)`
