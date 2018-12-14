@@ -14,6 +14,7 @@ import StyledButton from '../../styledComponents/styledButton';
 import GameDataPointList from '../gameDataPointList';
 import GameHistoryGraph from './graph';
 import shapes from '../shapes';
+import GameHistoryDataPoints from './dataPoints';
 
 const RangeSelectButtons = styled.div`
 	margin: 20px 20px 20px 0;
@@ -94,10 +95,7 @@ const GameHistory = ({
 						<h3>View history datapoints</h3>
 						{
 							R.map(([month, dataPoints]) => (
-								<div key={month}>
-									{month}
-									<GameDataPointList dataPoints={dataPoints} />
-								</div>
+								<GameHistoryDataPoints month={month} dataPoints={dataPoints} />
 							), gameDataPointLists)
 						}
 					</Fragment>
