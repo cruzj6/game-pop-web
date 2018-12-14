@@ -93,16 +93,12 @@ const GameHistory = ({
 						/>
 						<h3>View history datapoints</h3>
 						{
-							R.compose(
-								R.reverse,
-								R.values,
-								R.mapObjIndexed((dataPoints, month) => (
-									<div>
-										{month}
-										<GameDataPointList dataPoints={dataPoints} />
-									</div>
-								)),
-							)(gameDataPointLists)
+							R.map(([month, dataPoints]) => (
+								<div key={month}>
+									{month}
+									<GameDataPointList dataPoints={dataPoints} />
+								</div>
+							), gameDataPointLists)
 						}
 					</Fragment>
 				)
@@ -115,7 +111,7 @@ GameHistory.propTypes = {
 	serviceName: PropTypes.oneOf(Object.values(constants.SERVICE_NAMES)).isRequired,
 	selectedRange: PropTypes.string.isRequired,
 	setSelectedRange: PropTypes.func.isRequired,
-	gameDataPointLists: PropTypes.object.isRequired,
+	gameDataPointLists: PropTypes.array.isRequired,
 	serviceData: PropTypes.arrayOf(PropTypes.shape(shapes.ServiceData)).isRequired,
 	loading: PropTypes.bool.isRequired,
 };
@@ -135,6 +131,10 @@ export default compose(
 	withProps(({ data: { loading, Service: serviceData = [] } }) => ({
 		serviceData,
 		loading,
-		gameDataPointLists: R.groupBy(dataPoint => moment(Number(dataPoint.date)).format('MMMM'), serviceData),
+		gameDataPointLists: R.compose(
+			R.reverse,
+			R.toPairs,
+			R.groupBy(dataPoint => moment(Number(dataPoint.date)).format('MMMM')),
+		)(serviceData),
 	})),
 )(GameHistory);
