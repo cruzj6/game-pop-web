@@ -1,17 +1,19 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { Query } from 'react-apollo';
-import { compose, mapProps, withState } from 'recompose';
+import { graphql } from 'react-apollo';
+import { compose, mapProps, withState, withProps } from 'recompose';
 import styled from 'styled-components';
 import * as R from 'ramda';
+import moment from 'moment';
 import gql from 'graphql-tag';
 import GameButtons from '../gameButtons';
 import constants from '../../constants';
-import ServiceDataLine from '../visualization/serviceDataLine';
 import StyledHeader from '../../styledComponents/styledHeading';
 import messageBundle from '../../messageBundle';
 import StyledButton from '../../styledComponents/styledButton';
 import GameDataPointList from '../gameDataPointList';
+import GameHistoryGraph from './graph';
+import shapes from '../shapes';
 
 const RangeSelectButtons = styled.div`
 	margin: 20px 20px 20px 0;
@@ -19,10 +21,6 @@ const RangeSelectButtons = styled.div`
 
 const Heading = styled(StyledHeader)`
 	display: inline-block;
-`;
-
-const GraphContainerDiv = styled.div`
-	height: 500px;
 `;
 
 const rangeDays = {
@@ -58,6 +56,9 @@ const GameHistory = ({
 	serviceName,
 	selectedRange,
 	setSelectedRange,
+	gameDataPointLists,
+	serviceData,
+	loading,
 }) => (
 	<div>
 		<Heading>{name}</Heading>
@@ -80,40 +81,32 @@ const GameHistory = ({
 				), R.values(constants.DATE_RANGE_OPTIONS))
 			}
 		</RangeSelectButtons>
-		<Query
-			query={GAME_HISTORY_QUERY}
-			variables={{ gameName: name, serviceName, fromDate: getDateFromRangeOption(selectedRange) }}
-		>
-			{
-				({ loading, data: { Service = [] } = {} }) => (
+		{
+			loading
+				? <span>Loading...</span>
+				: (
 					<Fragment>
-						<GraphContainerDiv>
-							{
-								loading
-									? <span>Loading...</span>
-									: (
-										<ServiceDataLine
-											name={name}
-											serviceData={Service}
-											showDataPointCircles={
-												R.contains(
-													selectedRange,
-													[
-														constants.DATE_RANGE_OPTIONS.ONE_WEEK,
-														constants.DATE_RANGE_OPTIONS.TWO_WEEKS,
-													],
-												)
-											}
-										/>
-									)
-							}
-						</GraphContainerDiv>
+						<GameHistoryGraph
+							gameName={name}
+							serviceData={serviceData}
+							currentRange={selectedRange}
+						/>
 						<h3>View history datapoints</h3>
-						<GameDataPointList dataPoints={Service} />
+						{
+							R.compose(
+								R.reverse,
+								R.values,
+								R.mapObjIndexed((dataPoints, month) => (
+									<div>
+										{month}
+										<GameDataPointList dataPoints={dataPoints} />
+									</div>
+								)),
+							)(gameDataPointLists)
+						}
 					</Fragment>
 				)
-			}
-		</Query>
+		}
 	</div>
 );
 
@@ -122,6 +115,9 @@ GameHistory.propTypes = {
 	serviceName: PropTypes.oneOf(Object.values(constants.SERVICE_NAMES)).isRequired,
 	selectedRange: PropTypes.string.isRequired,
 	setSelectedRange: PropTypes.func.isRequired,
+	gameDataPointLists: PropTypes.object.isRequired,
+	serviceData: PropTypes.arrayOf(PropTypes.shape(shapes.ServiceData)).isRequired,
+	loading: PropTypes.bool.isRequired,
 };
 
 export default compose(
@@ -130,5 +126,15 @@ export default compose(
 		name: match.params.name,
 		serviceName: match.params.serviceName,
 		...rest,
+	})),
+	graphql(GAME_HISTORY_QUERY, {
+		options: ({ name, serviceName, selectedRange }) => ({
+			variables: { gameName: name, serviceName, fromDate: getDateFromRangeOption(selectedRange) },
+		}),
+	}),
+	withProps(({ data: { loading, Service: serviceData = [] } }) => ({
+		serviceData,
+		loading,
+		gameDataPointLists: R.groupBy(dataPoint => moment(Number(dataPoint.date)).format('MMMM'), serviceData),
 	})),
 )(GameHistory);

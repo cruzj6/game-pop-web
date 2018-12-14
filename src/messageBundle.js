@@ -11,4 +11,6 @@ export default {
 		[constants.DATE_RANGE_OPTIONS.SIX_MONTHS]: 'Six Months',
 		[constants.DATE_RANGE_OPTIONS.ONE_WEEK]: 'One Week',
 	},
+	HITS: 'Hits',
+	DATE: 'Date',
 };

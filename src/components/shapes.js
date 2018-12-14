@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 
-export default {
+const shapes = {
 	ServiceData: {
 		name: PropTypes.string,
 		date: PropTypes.oneOfType([
@@ -10,3 +10,5 @@ export default {
 		hits: PropTypes.string,
 	},
 };
+
+export default shapes;
