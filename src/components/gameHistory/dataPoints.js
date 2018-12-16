@@ -3,8 +3,11 @@ import PropTypes from 'prop-types';
 import styled, { keyframes } from 'styled-components';
 import { compose, withStateHandlers } from 'recompose';
 import { Transition } from 'react-transition-group';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCaretDown, faCaretRight } from '@fortawesome/free-solid-svg-icons';
 import GameDataPointList from '../gameDataPointList';
 import shapes from '../shapes';
+import styleConstants from '../../styleConstants';
 
 const SLIDE_DURATION = 500;
 
@@ -32,8 +35,18 @@ const slideOut = keyframes`
 	}
 `;
 
-const MonthHeader = styled.h1`
+const MonthHeader = styled.div`
 	cursor: pointer;
+	display: flex;
+	align-items: center;
+	border-bottom: 1px solid ${styleConstants.SECONDARY_ACCENT_COLOR};
+	margin: 10px;
+`;
+
+const MonthName = styled.h1`
+	padding-left: 10px;
+	display: inline-block;
+	margin: 0;
 `;
 
 const SlideInContainer = styled.div`
@@ -48,7 +61,10 @@ const GameHistoryDataPoints = ({
 	toggleExpanded,
 }) => (
 	<div key={month}>
-		<MonthHeader onClick={toggleExpanded}>{month}</MonthHeader>
+		<MonthHeader onClick={toggleExpanded}>
+			<FontAwesomeIcon icon={isExpanded ? faCaretDown : faCaretRight} />
+			<MonthName>{month}</MonthName>
+		</MonthHeader>
 		<Transition in={isExpanded} timeout={SLIDE_DURATION}>
 			{
 				state => (
@@ -70,8 +86,8 @@ GameHistoryDataPoints.propTypes = {
 };
 
 export default compose(
-	withStateHandlers(() => ({
-		isExpanded: false,
+	withStateHandlers(({ initiallyExpanded = false }) => ({
+		isExpanded: initiallyExpanded,
 	}), {
 		toggleExpanded: ({ isExpanded }) => () => ({
 			isExpanded: !isExpanded,

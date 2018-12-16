@@ -23,7 +23,10 @@ const Search = ({
 	<SearchContainer>
 		<GameSearch onSearch={setCurrentGameName} />
 		<ServiceSelection onSelect={setSelectedService} />
-		<ServiceHitsList gameName={currentGameName} serviceName={selectedService} />
+		{
+			currentGameName
+			&& <ServiceHitsList gameName={currentGameName} serviceName={selectedService} />
+		}
 	</SearchContainer>
 );
 

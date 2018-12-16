@@ -68,37 +68,50 @@ const GameHistory = ({
 			serviceName={serviceName}
 			name={name}
 		/>
-		<RangeSelectButtons>
-			<span>Hits in last: </span>
-			{
-				R.map(option => (
-					<StyledButton
-						key={option}
-						unselected={selectedRange !== option}
-						onClick={() => setSelectedRange(option)}
-					>
-						{messageBundle.DATE_RANGE_OPTION_STRINGS[option]}
-					</StyledButton>
-				), R.values(constants.DATE_RANGE_OPTIONS))
-			}
-		</RangeSelectButtons>
 		{
 			loading
-				? <span>Loading...</span>
+				? <p>Loading...</p>
 				: (
-					<Fragment>
-						<GameHistoryGraph
-							gameName={name}
-							serviceData={serviceData}
-							currentRange={selectedRange}
-						/>
-						<h3>View history datapoints</h3>
+					<div>
+						<RangeSelectButtons>
+							<span>Data for last: </span>
+							{
+								R.map(option => (
+									<StyledButton
+										key={option}
+										unselected={selectedRange !== option}
+										onClick={() => setSelectedRange(option)}
+									>
+										{messageBundle.DATE_RANGE_OPTION_STRINGS[option]}
+									</StyledButton>
+								), R.values(constants.DATE_RANGE_OPTIONS))
+							}
+						</RangeSelectButtons>
 						{
-							R.map(([month, dataPoints]) => (
-								<GameHistoryDataPoints month={month} dataPoints={dataPoints} />
-							), gameDataPointLists)
+							serviceData.length === 0 && <p>No History found for {name} in selected range</p>
 						}
-					</Fragment>
+						{
+							serviceData.length > 0 &&
+							<Fragment>
+								<GameHistoryGraph
+									gameName={name}
+									serviceData={serviceData}
+									currentRange={selectedRange}
+								/>
+								<h3>View history datapoints</h3>
+								{
+									R.map(([month, dataPoints]) => (
+										<GameHistoryDataPoints
+											key={month}
+											initiallyExpanded={gameDataPointLists.length === 1}
+											month={month}
+											dataPoints={dataPoints}
+										/>
+									), gameDataPointLists)
+								}
+							</Fragment>
+						}
+					</div>
 				)
 		}
 	</div>

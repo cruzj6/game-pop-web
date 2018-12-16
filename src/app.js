@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { HashRouter as Router, Route, Link } from 'react-router-dom';
+import { HashRouter as Router, Route, NavLink, Redirect, Switch } from 'react-router-dom';
 import Search from './routes/search';
 import styleConstants from './styleConstants';
 import GameHistory from './components/gameHistory';
@@ -64,7 +64,11 @@ const StyledNavLink = styled.li`
 		align-items: center;
 		justify-content: center;
 		text-decoration: none;
-		color: ${styleConstants.PRIMARY_TEXT_COLOR}
+		color: ${styleConstants.PRIMARY_TEXT_COLOR};
+
+		&.active {
+			background-color: ${styleConstants.SECONDARY_ACCENT_COLOR};
+		}
 	}
 `;
 
@@ -75,21 +79,23 @@ const App = () => (
 			<StyledMain>
 				<StyledNav>
 					<StyledNavLink>
-						<Link to="/">Home</Link>
+						<NavLink to="/home">Home</NavLink>
 					</StyledNavLink>
 					<StyledNavLink>
-						<Link to="/search">Search</Link>
+						<NavLink to="/search">Search</NavLink>
 					</StyledNavLink>
 					<StyledNavLink>
-						<Link to="/twitch">Twitch</Link>
+						<NavLink to="/twitch">Twitch</NavLink>
 					</StyledNavLink>
 				</StyledNav>
-
 				<StyledContent>
-					<Route exact path="/" component={Home} />
-					<Route exact path="/search" component={Search} />
-					<Route path="/twitch" component={Twitch} />
-					<Route path="/gamehistory/:name/:serviceName" component={GameHistory} />
+					<Switch>
+						<Route exact path="/home" component={Home} />
+						<Route exact path="/search" component={Search} />
+						<Route path="/twitch" component={Twitch} />
+						<Route path="/gamehistory/:name/:serviceName" component={GameHistory} />
+						<Redirect from="/" exact to="/home" />
+					</Switch>
 				</StyledContent>
 			</StyledMain>
 		</StyledPageRoot>

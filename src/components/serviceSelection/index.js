@@ -7,7 +7,7 @@ const ServiceSelection = ({ onSelect }) => (
 	<select onSelect={onSelect}>
 		{
 			Object.values(constants.SERVICE_NAMES).map(
-				serviceName => <option value={serviceName}>{serviceName}</option>,
+				serviceName => <option key={serviceName} value={serviceName}>{serviceName}</option>,
 			)
 		}
 	</select>

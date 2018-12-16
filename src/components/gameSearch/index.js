@@ -3,25 +3,27 @@ import PropTypes from 'prop-types';
 import { compose, withStateHandlers, withHandlers } from 'recompose';
 import InputWithButton from '../../styledComponents/inputWithButton';
 
-const GameSearch = ({ onSearch, setSearchText }) => (
-	<div>
+const GameSearch = ({ onSearch, setSearchText, onSubmit }) => (
+	<form onSubmit={onSubmit}>
 		<InputWithButton
 			onChange={setSearchText}
 			placeholder="search for game..."
 			onSubmit={onSearch}
 			buttonText="Search"
 		/>
-	</div>
+	</form>
 );
 
 GameSearch.propTypes = {
 	onSearch: PropTypes.func,
 	setSearchText: PropTypes.func,
+	onSubmit: PropTypes.func,
 };
 
 GameSearch.defaultProps = {
 	onSearch: undefined,
 	setSearchText: undefined,
+	onSubmit: undefined,
 };
 
 const EnhancedGameSearch = compose(
@@ -33,6 +35,7 @@ const EnhancedGameSearch = compose(
 	),
 	withHandlers({
 		onSearch: ({ onSearch, searchText }) => () => onSearch(searchText),
+		onSubmit: ({ onSearch, searchText }) => e => e.preventDefault() && onSearch(searchText),
 	}),
 )(GameSearch);
 

@@ -4,15 +4,14 @@ import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import { compose, withHandlers } from 'recompose';
 import { withRouter } from 'react-router-dom';
+import * as R from 'ramda';
 import constants from '../../constants';
 import GameServiceDataList from '../gameServiceDataList';
 
 const GAME_ON_SERVICE_QUERY = gql`
-	query GameOnService($gameName: String!, $serviceName: ServiceType!, $fromDate: String!, $maxResults: Int) {
-		Service (
-			gameName: $gameName,
-			date: $fromDate,
-			maxResults: $maxResults,
+	query GameOnService($searchTerms: String!, $serviceName: ServiceType!) {
+		GameSearch (
+			searchTerms: $searchTerms,
 			serviceName: $serviceName
 		) {
 			game {
@@ -28,15 +27,15 @@ const ServiceHitsList = ({ onItemClick, gameName, serviceName }) => (
 	<Query
 		query={GAME_ON_SERVICE_QUERY}
 		variables={{
-			maxResults: 1,
-			gameName,
+			searchTerms: R.trim(gameName),
 			serviceName,
-			fromDate: '0',
 		}}
 	>
 		{
-			({ data: { Service = [] } = {} }) => (
-				<GameServiceDataList onItemClick={onItemClick} serviceData={Service} />
+			({ loading, data: { GameSearch = [] } = {} }) => (
+				loading
+					? <p>Searching...</p>
+					: <GameServiceDataList onItemClick={onItemClick} serviceData={GameSearch} />
 			)
 		}
 	</Query>
