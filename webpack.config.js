@@ -10,7 +10,7 @@ module.exports = {
 					loader: 'babel-loader',
 					options: {
 						presets: ['@babel/preset-env', '@babel/react'],
-						plugins: ['@babel/plugin-proposal-object-rest-spread'],
+						plugins: ['@babel/plugin-proposal-object-rest-spread', '@babel/plugin-syntax-dynamic-import'],
 					},
 				},
 			},
@@ -26,7 +26,7 @@ module.exports = {
 			},
 		],
 	},
-	entry: ['./src/index.js'],
+	entry: ['./src/bootstrap.js'],
 	output: {
 		filename: 'bundle.js',
 		path: path.resolve(__dirname, 'dist'),
