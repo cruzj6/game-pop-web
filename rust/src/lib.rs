@@ -7,8 +7,9 @@ mod utils;
 
 // Pull in everything in wasm_bindgen::prelude so it can be invoked directly
 use chrono::prelude::NaiveDateTime;
+use chrono::DateTime;
+use chrono::Datelike;
 use chrono::Utc;
-use std::time::{Duration, SystemTime, UNIX_EPOCH};
 use wasm_bindgen::prelude::*;
 
 #[derive(Serialize, Deserialize)]
@@ -51,10 +52,16 @@ pub fn average_by_week(data: &JsValue) -> JsValue {
             data_point.date,
             data_point.hits
         );
-        let timestamp: u64 = data_point.date.parse::<u64>().unwrap();
-        let systemTime: SystemTime = UNIX_EPOCH + Duration::from_millis(timestamp);
-        let dateTime: NaiveDateTime = NaiveDateTime::from(systemTime);
-        console_log!("{}", dateTime.iso_week());
+
+        // Convert the unix timestamp string to an i64
+        let timestamp: i64 = data_point.date.parse::<i64>().unwrap();
+
+        // Get the naive dateTime from the timestamp (no timezone applied, since this is a unix time)
+        let naive_date_time: NaiveDateTime = NaiveDateTime::from_timestamp(timestamp / 1000, 0);
+
+        // Now make it UTC
+        let date_time: DateTime<Utc> = DateTime::from_utc(naive_date_time, Utc);
+        console_log!("{}", date_time.iso_week().week());
     }
 
     JsValue::from_serde(&data_points).unwrap()
