@@ -3,6 +3,8 @@ import * as R from 'ramda';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
+import { compose, mapProps } from 'recompose';
+import * as dataTransforms from 'game-pop-data-transforms';
 import shapes from '../shapes';
 import GameDataPointListItem from './item';
 
@@ -13,29 +15,44 @@ const DataPointList = styled.ul`
 	max-width: 1500px;
 `;
 
-const GameDataPointList = ({ dataPoints }) => (
+const GameDataPointList = ({ averageDataPoints }) => (
 	<DataPointList>
 		{
-			R.map(dataPoint => (
-				<GameDataPointListItem key={dataPoint.date} {...dataPoint} />
-			), dataPoints)
+			R.map(averageDataPoint => (
+				<GameDataPointListItem
+					key={averageDataPoint.week}
+					weekNumber={averageDataPoint.week}
+					hits={averageDataPoint.average}
+				/>
+			), averageDataPoints)
 		}
 	</DataPointList>
 );
 
-GameDataPointList.fragments = gql`
+GameDataPointList.propTypes = {
+	averageDataPoints: PropTypes.arrayOf(PropTypes.shape(shapes.ServiceData)),
+};
+
+GameDataPointList.defaultProps = {
+	averageDataPoints: [],
+};
+
+const EnhancedGameDataPointList = compose(
+	mapProps((props) => {
+		const averageDataPoints = dataTransforms.average_by_week(props.dataPoints);
+
+		return {
+			averageDataPoints: R.sortBy(R.prop('week'))(averageDataPoints),
+			...props,
+		};
+	}),
+)(GameDataPointList);
+
+EnhancedGameDataPointList.fragments = gql`
 	fragment dataPoint on ServiceDataItem {
 		hits
 		date
 	}
 `;
 
-GameDataPointList.propTypes = {
-	dataPoints: PropTypes.arrayOf(PropTypes.shape(shapes.ServiceData)),
-};
-
-GameDataPointList.defaultProps = {
-	dataPoints: [],
-};
-
-export default GameDataPointList;
+export default EnhancedGameDataPointList;

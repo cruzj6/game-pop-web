@@ -7,7 +7,7 @@ const shapes = {
 			PropTypes.string,
 			PropTypes.instanceOf(Date),
 		]),
-		hits: PropTypes.string,
+		hits: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 	},
 };
 
