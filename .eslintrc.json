@@ -1,5 +1,11 @@
 {
+    "env": {
+        "jest/globals": true
+    },
     "extends": "airbnb",
+    "plugins": [
+        "jest"
+    ],
     "rules": {
         "no-tabs": "off",
         "indent": [
