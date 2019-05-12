@@ -9,7 +9,7 @@
     "start": "/bin/bash build-rust-packages.sh && webpack-dev-server --mode development",
     "test": "",
     "build": "webpack --mode production",
-    "build:rust": "./build-rust-packages.sh"
+    "build:rust": "sh build-rust-packages.sh"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "1.2.10",
