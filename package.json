@@ -7,7 +7,7 @@
   "license": "MIT",
   "scripts": {
     "start": "/bin/bash build-rust-packages.sh && webpack-dev-server --mode development",
-    "build": "/bin/bash build-rust-packages.sh && webpack --mode production",
+    "build": "webpack --mode production",
     "build:rust": "cd rust && wasm-pack build"
   },
   "dependencies": {
@@ -20,6 +20,7 @@
     "apollo-link-http": "^1.5.4",
     "d3": "5.4.0",
     "date-fns": "^1.30.1",
+    "game-pop-data-transforms": "^0.1.0",
     "graphql": "^0.13.2",
     "graphql-tag": "^2.8.0",
     "moment": "2.22.2",
