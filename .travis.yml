@@ -1,0 +1,16 @@
+language: node_js
+node_js:
+  - "10.15.3"
+install:
+  - curl https://sh.rustup.rs -sSf | sh -s -- -y
+  - . $HOME/.cargo/env
+  - curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
+  - yarn install
+  - yarn build:rust
+before_deploy:
+  - cd rust/pkg
+deploy:
+  provider: npm
+  email: cruzjoey94@gmail.com
+  api_key:
+    secure: "uo0X90BOPmid7U448npOAv/HunKfLBSjZWo+Y84657/XTvwTmHL1wy/7PU7D4OKuiCnqya762FeA+fBCwNhv8Cn+v3XXlxr6dGV6mg4MCj97S/wj5xH+6m0tk/w4b4zp+8BmGgTPD4/6AZyfTxWf35m2KulPFstA4qA2kLo+DFLu1matI/SwF8oJDATFegjNleecunzAyBZZKWgUphIc0zQAA7Iej/2tVY43/ZkuQ/SpRo0zoWKgbRhTZ4/0bdjRyLw9vbTZR5uE7oXcFhIYysAV0Rwd+WnyS54upPgal4v9Dp+LPDEEIYnw8te6nTZorI46B/oENEtbuLBQTiAWc8wH/UVCIaVpOlrKeqluzd6/0gP9m/9TGAHZhuKbMI1fGdufAeb5K9FV650uW9XOHhUiVQl9P+mdnVhAG4RC8AYyHM5aJqofIp4bNP5gH5Kz8xgphSWOdRWyBu+jE3TtG1tnFL1GQT2viE6QimLizh9KlP6R7vZBGq+LOcSeVVN/uFskupDmJLoV1Yc22p/oCrqTuYOyQ5YmnG4RdvM9jeSvy0ek/07nMc3+IUMeoUliR8f1nmFMYJGSjeNOYP7hgt/F67IqkGuUtQe/Oi0e2LsfMCP0oUClAkV/o1P6nOzEghEbyGFiziOGNV6SjhmgheYii73Yms2JeiYK3Atbibk="
