@@ -60,23 +60,23 @@ const GameHistoryDataPoints = ({
 	isExpanded,
 	toggleExpanded,
 }) => (
-		<div key={month}>
-			<MonthHeader onClick={toggleExpanded}>
-				<FontAwesomeIcon icon={isExpanded ? faCaretDown : faCaretRight} />
-				<MonthName>{month}</MonthName>
-			</MonthHeader>
-			<Transition in={isExpanded} timeout={SLIDE_DURATION}>
-				{
-					state => (
-						state !== 'exited' &&
+	<div key={month}>
+		<MonthHeader onClick={toggleExpanded}>
+			<FontAwesomeIcon icon={isExpanded ? faCaretDown : faCaretRight} />
+			<MonthName>{month}</MonthName>
+		</MonthHeader>
+		<Transition in={isExpanded} timeout={SLIDE_DURATION}>
+			{
+				state => (
+					state !== 'exited' &&
 						<SlideInContainer leaving={!['entering', 'entered'].includes(state)}>
 							<GameDataPointList dataPoints={dataPoints} />
 						</SlideInContainer>
-					)
-				}
-			</Transition>
-		</div>
-	);
+				)
+			}
+		</Transition>
+	</div>
+);
 
 GameHistoryDataPoints.propTypes = {
 	month: PropTypes.string.isRequired,
@@ -89,8 +89,8 @@ export default compose(
 	withStateHandlers(({ initiallyExpanded = false }) => ({
 		isExpanded: initiallyExpanded,
 	}), {
-			toggleExpanded: ({ isExpanded }) => () => ({
-				isExpanded: !isExpanded,
-			}),
+		toggleExpanded: ({ isExpanded }) => () => ({
+			isExpanded: !isExpanded,
 		}),
+	}),
 )(GameHistoryDataPoints);
