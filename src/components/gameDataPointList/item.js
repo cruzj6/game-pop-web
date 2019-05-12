@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
+import { setISOWeek, startOfISOWeek, format } from 'date-fns';
 import shapes from '../shapes';
-import StringUtils from '../../stringUtils';
 import styleConstants from '../../styleConstants';
 import messageBundle from '../../messageBundle';
 
@@ -21,9 +21,9 @@ const GameDataContainer = styled.li`
 	}
 `;
 
-const GameDataPointListItem = ({ hits, date }) => (
+const GameDataPointListItem = ({ hits, weekNumber }) => (
 	<GameDataContainer>
-		<span>{StringUtils.getDateWithTime(Number(date))}</span>
+		<span>Week Starting: {format(startOfISOWeek(setISOWeek(new Date(), weekNumber)), 'MM/DD')}</span>
 		<p>{`${messageBundle.HITS}: ${hits}`}</p>
 	</GameDataContainer>
 );

@@ -15,33 +15,34 @@ const DataPointList = styled.ul`
 	max-width: 1500px;
 `;
 
-const GameDataPointList = ({ dataPoints }) => (
+const GameDataPointList = ({ averageDataPoints }) => (
 	<DataPointList>
 		{
-			R.map(dataPoint => (
-				<GameDataPointListItem key={dataPoint.date} {...dataPoint} />
-			), dataPoints)
+			R.map(averageDataPoint => (
+				<GameDataPointListItem
+					key={averageDataPoint.week}
+					weekNumber={averageDataPoint.week}
+					hits={averageDataPoint.average}
+				/>
+			), averageDataPoints)
 		}
 	</DataPointList>
 );
 
 GameDataPointList.propTypes = {
-	dataPoints: PropTypes.arrayOf(PropTypes.shape(shapes.ServiceData)),
+	averageDataPoints: PropTypes.arrayOf(PropTypes.shape(shapes.ServiceData)),
 };
 
 GameDataPointList.defaultProps = {
-	dataPoints: [],
+	averageDataPoints: [],
 };
 
 const EnhancedGameDataPointList = compose(
 	mapProps((props) => {
-		console.log(props.dataPoints)
-		const result = dataTransforms.average_by_week(props.dataPoints);
-
-		console.log(result)
+		const averageDataPoints = dataTransforms.average_by_week(props.dataPoints);
 
 		return {
-			// averageDataPoints:
+			averageDataPoints: R.sortBy(R.prop('week'))(averageDataPoints),
 			...props,
 		};
 	}),
