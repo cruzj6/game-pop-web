@@ -3,6 +3,7 @@ node_js:
   - "10.15.3"
 install:
   - curl https://sh.rustup.rs -sSf | sh -s -- -y
+  - . $HOME/.cargo/env
   - curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
   - yarn install
   - yarn build:rust
