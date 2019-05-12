@@ -7,7 +7,7 @@
   "license": "MIT",
   "scripts": {
     "start": "/bin/bash build-rust-packages.sh && webpack-dev-server --mode development",
-    "build": "webpack --mode production",
+    "build": "/bin/bash build-rust-packages.sh && webpack --mode production",
     "build:rust": "cd rust && wasm-pack build"
   },
   "dependencies": {
